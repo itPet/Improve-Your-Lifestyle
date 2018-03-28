@@ -13,7 +13,12 @@ class Task {
     var name : String
     var points : Int
     
-    init(name : String, points : Int) {
+    init(_ name: String, _ points: Int) {
+        self.name = name
+        self.points = points
+    }
+    
+    init(name: String, points: Int) {
         self.name = name
         self.points = points
     }
