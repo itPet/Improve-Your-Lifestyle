@@ -17,16 +17,14 @@ class TaskList {
         self.name = name
     }
     
+    init(name: String, taskList: [Task]) {
+        self.name = name
+        self.taskList = taskList
+    }
+    
     func addTask(_ task: Task) {
         taskList.append(task)
     }
     
-    func addTask(_ task1: Task,_ task2: Task,_ task3: Task,_ task4: Task,_ task5: Task) {
-        taskList.append(task1)
-        taskList.append(task2)
-        taskList.append(task3)
-        taskList.append(task4)
-        taskList.append(task5)
-    }
     
 }

@@ -7,32 +7,73 @@
 //
 
 import UIKit
+import Firebase
 
 class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var listOfTaskLists = [TaskList]()
-
+    var placeOfHistoryCell = 0
+    var subtract = 0
+    @IBOutlet weak var toDayTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        print("toDayDidLoad")
+        let tbc = tabBarController as! TabBarController
+        listOfTaskLists = tbc.listOfTaskLists
+        placeOfHistoryCell = tbc.placeOfHistoryCell
+        toDayTableView.tableFooterView = UIView(frame: CGRect.zero)
+        
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfTaskLists.count
+        return listOfTaskLists[0].taskList.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "toDayCell", for: indexPath)
+        let historyCell = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath)
         
-        cell.textLabel?.text = listOfTaskLists[indexPath.row].name
+        subtract = 0
         
-        return cell
+        if indexPath.row > placeOfHistoryCell {
+            subtract = 1
+        }
+        if indexPath.row == placeOfHistoryCell {
+            historyCell.backgroundColor = UIColor.red
+            historyCell.textLabel?.text = "Statistik"
+            return historyCell
+        }
+        else {
+            cell.textLabel?.text = listOfTaskLists[0].taskList[indexPath.row - subtract].name
+            cell.detailTextLabel?.text = String(listOfTaskLists[0].taskList[indexPath.row - subtract].points)
+            return cell
+        }
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.row > placeOfHistoryCell {
+            let elementToMove = listOfTaskLists[0].taskList[indexPath.row - subtract]
+
+            if placeOfHistoryCell < listOfTaskLists[0].taskList.count {
+                let tbc = tabBarController as! TabBarController
+                placeOfHistoryCell += 1
+                tbc.placeOfHistoryCell = placeOfHistoryCell
+            }
+            
+            listOfTaskLists[0].taskList.insert(elementToMove, at: placeOfHistoryCell - 1)
+            listOfTaskLists[0].taskList.remove(at: (indexPath.row - subtract) + 1)
+            toDayTableView.reloadData()
+        }
+        
+        
+    }
+    
     
     
     

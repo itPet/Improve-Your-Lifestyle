@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		653D8B41206B9DC60029FCD9 /* ToDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653D8B40206B9DC60029FCD9 /* ToDayViewController.swift */; };
+		653D8B43206BE9020029FCD9 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653D8B42206BE9020029FCD9 /* TabBarController.swift */; };
+		653D8B75206BF5CB0029FCD9 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653D8B74206BF5CB0029FCD9 /* SampleData.swift */; };
 		6568306C205FDDBD00868996 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568306B205FDDBD00868996 /* AddTaskViewController.swift */; };
 		657DBCF220500FEE0011A09A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DBCF120500FEE0011A09A /* AppDelegate.swift */; };
 		657DBCF720500FEE0011A09A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 657DBCF520500FEE0011A09A /* Main.storyboard */; };
@@ -16,7 +18,11 @@
 		657DBD0720500FEE0011A09A /* Improve_Your_LifestyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DBD0620500FEE0011A09A /* Improve_Your_LifestyleTests.swift */; };
 		659AE3D32062573400E36027 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659AE3D22062573400E36027 /* TaskList.swift */; };
 		65A9E1EE205FE5D20072E296 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A9E1ED205FE5D20072E296 /* Task.swift */; };
+		65B2EBC120723230004AB029 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65B2EBC020723230004AB029 /* GoogleService-Info.plist */; };
+		65F4069E2073771A003C0FD8 /* LastHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */; };
 		65F861A4206912B5001EEB61 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F861A3206912B5001EEB61 /* HomeViewController.swift */; };
+		6BCE79EB937229024808F71D /* Pods_Improve_Your_LifestyleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A827100BF5E76CC0AF246BED /* Pods_Improve_Your_LifestyleTests.framework */; };
+		C44B1B462E66227D8A04821C /* Pods_Improve_Your_Lifestyle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46580329AED0BD91C6BD85B /* Pods_Improve_Your_Lifestyle.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +36,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		062C403D56FC209BCC8D1D8D /* Pods-Improve Your Lifestyle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Improve Your Lifestyle.release.xcconfig"; path = "Pods/Target Support Files/Pods-Improve Your Lifestyle/Pods-Improve Your Lifestyle.release.xcconfig"; sourceTree = "<group>"; };
+		30F214DC0715D11C62BE26E1 /* Pods-Improve Your LifestyleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Improve Your LifestyleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Improve Your LifestyleTests/Pods-Improve Your LifestyleTests.release.xcconfig"; sourceTree = "<group>"; };
+		53BBCEA8D42A4860FE43524C /* Pods-Improve Your LifestyleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Improve Your LifestyleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Improve Your LifestyleTests/Pods-Improve Your LifestyleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		653D8B40206B9DC60029FCD9 /* ToDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDayViewController.swift; sourceTree = "<group>"; };
+		653D8B42206BE9020029FCD9 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		653D8B74206BF5CB0029FCD9 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		6568306B205FDDBD00868996 /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		657DBCEE20500FEE0011A09A /* Improve Your Lifestyle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Improve Your Lifestyle.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		657DBCF120500FEE0011A09A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,7 +54,12 @@
 		657DBD0820500FEE0011A09A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		659AE3D22062573400E36027 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		65A9E1ED205FE5D20072E296 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		65B2EBC020723230004AB029 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastHomeTableViewCell.swift; sourceTree = "<group>"; };
 		65F861A3206912B5001EEB61 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		A827100BF5E76CC0AF246BED /* Pods_Improve_Your_LifestyleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Improve_Your_LifestyleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C46580329AED0BD91C6BD85B /* Pods_Improve_Your_Lifestyle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Improve_Your_Lifestyle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D292B70479AEBF4E2D642245 /* Pods-Improve Your Lifestyle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Improve Your Lifestyle.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Improve Your Lifestyle/Pods-Improve Your Lifestyle.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C44B1B462E66227D8A04821C /* Pods_Improve_Your_Lifestyle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,18 +75,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BCE79EB937229024808F71D /* Pods_Improve_Your_LifestyleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		29DBA1BC3F785FB220338BEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C46580329AED0BD91C6BD85B /* Pods_Improve_Your_Lifestyle.framework */,
+				A827100BF5E76CC0AF246BED /* Pods_Improve_Your_LifestyleTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		657DBCE520500FEE0011A09A = {
 			isa = PBXGroup;
 			children = (
 				657DBCF020500FEE0011A09A /* Improve Your Lifestyle */,
 				657DBD0520500FEE0011A09A /* Improve Your LifestyleTests */,
 				657DBCEF20500FEE0011A09A /* Products */,
+				99C971C587837BB867888973 /* Pods */,
+				29DBA1BC3F785FB220338BEA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -86,8 +115,9 @@
 			isa = PBXGroup;
 			children = (
 				657DBCF120500FEE0011A09A /* AppDelegate.swift */,
-				6568306B205FDDBD00868996 /* AddTaskViewController.swift */,
+				653D8B42206BE9020029FCD9 /* TabBarController.swift */,
 				65F861A3206912B5001EEB61 /* HomeViewController.swift */,
+				6568306B205FDDBD00868996 /* AddTaskViewController.swift */,
 				653D8B40206B9DC60029FCD9 /* ToDayViewController.swift */,
 				65A9E1ED205FE5D20072E296 /* Task.swift */,
 				659AE3D22062573400E36027 /* TaskList.swift */,
@@ -95,6 +125,9 @@
 				657DBCF820500FEE0011A09A /* Assets.xcassets */,
 				657DBCFA20500FEE0011A09A /* LaunchScreen.storyboard */,
 				657DBCFD20500FEE0011A09A /* Info.plist */,
+				65B2EBC020723230004AB029 /* GoogleService-Info.plist */,
+				653D8B74206BF5CB0029FCD9 /* SampleData.swift */,
+				65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */,
 			);
 			path = "Improve Your Lifestyle";
 			sourceTree = "<group>";
@@ -108,6 +141,17 @@
 			path = "Improve Your LifestyleTests";
 			sourceTree = "<group>";
 		};
+		99C971C587837BB867888973 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D292B70479AEBF4E2D642245 /* Pods-Improve Your Lifestyle.debug.xcconfig */,
+				062C403D56FC209BCC8D1D8D /* Pods-Improve Your Lifestyle.release.xcconfig */,
+				53BBCEA8D42A4860FE43524C /* Pods-Improve Your LifestyleTests.debug.xcconfig */,
+				30F214DC0715D11C62BE26E1 /* Pods-Improve Your LifestyleTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -115,9 +159,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 657DBD0B20500FEE0011A09A /* Build configuration list for PBXNativeTarget "Improve Your Lifestyle" */;
 			buildPhases = (
+				892459B3F304CA45581D2A36 /* [CP] Check Pods Manifest.lock */,
 				657DBCEA20500FEE0011A09A /* Sources */,
 				657DBCEB20500FEE0011A09A /* Frameworks */,
 				657DBCEC20500FEE0011A09A /* Resources */,
+				01A52BE82594870738832E5D /* [CP] Embed Pods Frameworks */,
+				A67CDBC93ACF1270556DCAD6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -132,9 +179,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 657DBD0E20500FEE0011A09A /* Build configuration list for PBXNativeTarget "Improve Your LifestyleTests" */;
 			buildPhases = (
+				97CE5D4F6FC6895A7B08105B /* [CP] Check Pods Manifest.lock */,
 				657DBCFE20500FEE0011A09A /* Sources */,
 				657DBCFF20500FEE0011A09A /* Frameworks */,
 				657DBD0020500FEE0011A09A /* Resources */,
+				9A0A44FBF7FD7FA310A6AB11 /* [CP] Embed Pods Frameworks */,
+				F97393A3C48B715D92A13197 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -193,6 +243,7 @@
 			files = (
 				657DBCFC20500FEE0011A09A /* LaunchScreen.storyboard in Resources */,
 				657DBCF920500FEE0011A09A /* Assets.xcassets in Resources */,
+				65B2EBC120723230004AB029 /* GoogleService-Info.plist in Resources */,
 				657DBCF720500FEE0011A09A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -206,17 +257,126 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		01A52BE82594870738832E5D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Improve Your Lifestyle/Pods-Improve Your Lifestyle-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Improve Your Lifestyle/Pods-Improve Your Lifestyle-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		892459B3F304CA45581D2A36 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Improve Your Lifestyle-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97CE5D4F6FC6895A7B08105B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Improve Your LifestyleTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9A0A44FBF7FD7FA310A6AB11 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Improve Your LifestyleTests/Pods-Improve Your LifestyleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A67CDBC93ACF1270556DCAD6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Improve Your Lifestyle/Pods-Improve Your Lifestyle-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F97393A3C48B715D92A13197 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Improve Your LifestyleTests/Pods-Improve Your LifestyleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		657DBCEA20500FEE0011A09A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				659AE3D32062573400E36027 /* TaskList.swift in Sources */,
+				65F4069E2073771A003C0FD8 /* LastHomeTableViewCell.swift in Sources */,
 				657DBCF220500FEE0011A09A /* AppDelegate.swift in Sources */,
 				65A9E1EE205FE5D20072E296 /* Task.swift in Sources */,
 				6568306C205FDDBD00868996 /* AddTaskViewController.swift in Sources */,
+				653D8B43206BE9020029FCD9 /* TabBarController.swift in Sources */,
 				653D8B41206B9DC60029FCD9 /* ToDayViewController.swift in Sources */,
 				65F861A4206912B5001EEB61 /* HomeViewController.swift in Sources */,
+				653D8B75206BF5CB0029FCD9 /* SampleData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +527,7 @@
 		};
 		657DBD0C20500FEE0011A09A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D292B70479AEBF4E2D642245 /* Pods-Improve Your Lifestyle.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -382,6 +543,7 @@
 		};
 		657DBD0D20500FEE0011A09A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 062C403D56FC209BCC8D1D8D /* Pods-Improve Your Lifestyle.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -397,6 +559,7 @@
 		};
 		657DBD0F20500FEE0011A09A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 53BBCEA8D42A4860FE43524C /* Pods-Improve Your LifestyleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -414,6 +577,7 @@
 		};
 		657DBD1020500FEE0011A09A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 30F214DC0715D11C62BE26E1 /* Pods-Improve Your LifestyleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

@@ -1,0 +1,6 @@
+framework module Pods_Improve_Your_Lifestyle {
+  umbrella header "Pods-Improve Your Lifestyle-umbrella.h"
+
+  export *
+  module * { export * }
+}

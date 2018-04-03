@@ -7,26 +7,31 @@
 //
 
 import UIKit
+import Firebase
 
 class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
    
-    
+    var ref: DatabaseReference!
+
     @IBOutlet weak var popUpView: UIView!
     @IBOutlet weak var nameTextField: UITextView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var pointsTextField: UITextView!
     @IBOutlet weak var addedTasksTableView: UITableView!
     
-    
+    var placeOfHistoryCell = 0
     var taskList = TaskList(name: "Orvar")
     var listOfTaskLists = [TaskList]()
-    var willAppend = true
+    var newTaskList = true
     var selectedRow = 0
+    var currentList = "New list"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addedTasksTableView.dataSource = self
         addedTasksTableView.delegate = self
+        print(placeOfHistoryCell)
+        addedTasksTableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     
     @IBAction func addTaskBtnPressed(_ sender: UIBarButtonItem) {
@@ -34,15 +39,28 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func doneBtnPressed(_ sender: UIButton) {
-        taskList.addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
+        ref = Database.database().reference()
         
+        if newTaskList {
+            taskList.addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
+            taskList.name = titleTextField.text!
+            
+            ref.child("New list").child(nameTextField.text).setValue(pointsTextField.text)
+        }
+        else {
+            listOfTaskLists[selectedRow].addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
+            listOfTaskLists[selectedRow].name = titleTextField.text!
+            
+            ref.child(listOfTaskLists[selectedRow].name).child(nameTextField.text).setValue(pointsTextField.text)
+            
+        }
         popUpView.isHidden = true
+        
         addedTasksTableView.reloadData()
-        taskList.name = titleTextField.text!
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if willAppend {
+        if newTaskList {
             return taskList.taskList.count
         }
         else {
@@ -53,7 +71,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         
-        if willAppend {
+        if newTaskList {
             cell?.textLabel?.text = taskList.taskList[indexPath.row].name
             cell?.detailTextLabel?.text = String(taskList.taskList[indexPath.row].points)
         }
@@ -67,15 +85,14 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let homeViewController = segue.destination as? HomeViewController
+        let tbc = segue.destination as? TabBarController
         
-        if willAppend {
+        if newTaskList {
             listOfTaskLists.append(taskList)
-            print("did append")
         }
-        homeViewController?.listOfTaskLists = listOfTaskLists
-        print(listOfTaskLists)
-        print(homeViewController?.listOfTaskLists)
+        
+        tbc?.listOfTaskLists = listOfTaskLists
+        tbc?.placeOfHistoryCell = placeOfHistoryCell
     }
     
     

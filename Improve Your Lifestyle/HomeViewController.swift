@@ -7,59 +7,85 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var sampleList = TaskList(name: "Uppgifter")
-    var sampleList2 = TaskList(name: "Viktiga saker")
+    var ref: DatabaseReference!
     var listOfTaskLists = [TaskList]()
-    var willAppend = true
+    var newTaskList = true
     var selectedRow = 0
-    
+    var placeOfHistoryCell = 0
+    var currentList = "New list"
     
     @IBOutlet weak var homeTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tbc = tabBarController as! TabBarController
+        listOfTaskLists = tbc.listOfTaskLists
+        placeOfHistoryCell = tbc.placeOfHistoryCell
+        homeTableView.tableFooterView = UIView(frame: CGRect.zero)
         
-//        let toDayViewController = self.tabBarController?.viewControllers![1] as! ToDayViewController
-//        
-//        sampleList.addTask(Task("Gå upp kl 7", 2), Task("Ät mat", 5), Task("Gå med hunden", 1), Task("Plugga en timme", 3), Task("Köp hundmat", 4))
-//        sampleList2.addTask(Task("Gör nått viktigt", 5))
-//        
-//        listOfTaskLists.append(sampleList)
-//        listOfTaskLists.append(sampleList2)
-//        
-//        toDayViewController.listOfTaskLists = listOfTaskLists
-        //homeTableView.reloadData()
+        var newList = [TaskList]()
         
-        // Do any additional setup after loading the view.
+        ref = Database.database().reference()
+        ref.observe(.childAdded) { (snapshot) in
+            
+            newList.append(TaskList(name: snapshot.key))
+            
+            
+            
+            self.listOfTaskLists = newList
+            self.homeTableView.reloadData()
+        }
+        
+//        ref.child("Bra grejer").observe(.value) { (snapshot) in
+//            print(snapshot.value as! [String: Int])
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        let tbc = tabBarController as! TabBarController
+        placeOfHistoryCell = tbc.placeOfHistoryCell
         homeTableView.reloadData()
-        willAppend = true
-        print(listOfTaskLists)
+        newTaskList = true
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfTaskLists.count
+        return listOfTaskLists.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "homeCell", for: indexPath)
+        let lastCell = tableView.dequeueReusableCell(withIdentifier: "lastHomeCell", for: indexPath)
         
-        cell.textLabel?.text = listOfTaskLists[indexPath.row].name
-        
-        return cell
+        if indexPath.row < listOfTaskLists.count {
+            cell.textLabel?.text = listOfTaskLists[indexPath.row].name
+            return cell
+        }
+        else {
+            lastCell.textLabel?.text = "add list"
+            lastCell.textLabel?.textColor = UIColor.gray
+            return lastCell
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        willAppend = false
-        selectedRow = indexPath.row
-        
-        performSegue(withIdentifier: "toAddTask", sender: AnyObject.self)
-        
+        if indexPath.row == (listOfTaskLists.count) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "lastHomeCell", for: indexPath) as! LastHomeTableViewCell
+            
+            cell.textField.isHidden = false
+            print("false")
+            homeTableView.reloadData()
+            
+        }
+        else {
+            newTaskList = false
+            selectedRow = indexPath.row
+            
+            performSegue(withIdentifier: "toAddTask", sender: AnyObject.self)
+        }
     }
     
     
@@ -67,8 +93,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let addTaskViewController = segue.destination as? AddTaskViewController
         
         addTaskViewController?.listOfTaskLists = listOfTaskLists
-        addTaskViewController?.willAppend = willAppend
+        addTaskViewController?.newTaskList = newTaskList
         addTaskViewController?.selectedRow = selectedRow
+        addTaskViewController?.placeOfHistoryCell = placeOfHistoryCell
     }
     
 
