@@ -23,6 +23,10 @@ class Task {
         self.points = points
     }
     
-    
+    init(name: String, points: AnyObject){
+        self.name = name
+        let p = points as! String
+        self.points = Int(p)!
+    }
     
 }

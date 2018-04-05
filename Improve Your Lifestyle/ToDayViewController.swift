@@ -11,7 +11,8 @@ import Firebase
 
 class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var listOfTaskLists = [TaskList]()
+    var ref: DatabaseReference!
+    var userId = ""
     var placeOfHistoryCell = 0
     var subtract = 0
     @IBOutlet weak var toDayTableView: UITableView!
@@ -20,10 +21,9 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         print("toDayDidLoad")
         let tbc = tabBarController as! TabBarController
-        listOfTaskLists = tbc.listOfTaskLists
         placeOfHistoryCell = tbc.placeOfHistoryCell
+        userId = tbc.userId
         toDayTableView.tableFooterView = UIView(frame: CGRect.zero)
-        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -64,18 +64,15 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 let tbc = tabBarController as! TabBarController
                 placeOfHistoryCell += 1
                 tbc.placeOfHistoryCell = placeOfHistoryCell
+                ref = Database.database().reference()
+                ref.child(userId).child("info").child("placeOfHistoryCell").setValue(String(placeOfHistoryCell))
             }
             
             listOfTaskLists[0].taskList.insert(elementToMove, at: placeOfHistoryCell - 1)
             listOfTaskLists[0].taskList.remove(at: (indexPath.row - subtract) + 1)
             toDayTableView.reloadData()
         }
-        
-        
     }
-    
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -10,9 +10,9 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
+    var userId = "playerId"
     var placeOfHistoryCell = 0
     //var listOfTaskLists = [TaskList]()
-    var listOfTaskLists = [TaskList(name: "Bra lista", taskList: [Task("Uppgift", 1), Task("Gå upp kl 7", 2), Task("Ät mat", 5), Task("Gå med hunden", 1), Task("Plugga en timme", 3), Task("Köp hundmat", 4)]), TaskList(name: "Lista", taskList: [Task("Hoppa", 1), Task("Gräva", 2), Task("Simma", 5), Task("Gå på toa", 1), Task("Baka", 3), Task("Flyg", 4)])]
     
     override func viewDidLoad() {
         super.viewDidLoad()

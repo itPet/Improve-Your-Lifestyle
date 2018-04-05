@@ -9,10 +9,14 @@
 import UIKit
 import Firebase
 
+var listOfTaskLists = [TaskList]()
+var test  = true
+
+
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    var userId = "playerId"
     var ref: DatabaseReference!
-    var listOfTaskLists = [TaskList]()
     var newTaskList = true
     var selectedRow = 0
     var placeOfHistoryCell = 0
@@ -23,26 +27,51 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         let tbc = tabBarController as! TabBarController
-        listOfTaskLists = tbc.listOfTaskLists
         placeOfHistoryCell = tbc.placeOfHistoryCell
+        userId = tbc.userId
         homeTableView.tableFooterView = UIView(frame: CGRect.zero)
-        
+        getDataFromFirebase()
+        print("homeDidLoad")
+    }
+    
+    func getDataFromFirebase() {
         var newList = [TaskList]()
-        
         ref = Database.database().reference()
-        ref.observe(.childAdded) { (snapshot) in
-            
-            newList.append(TaskList(name: snapshot.key))
-            
-            
-            
-            self.listOfTaskLists = newList
+        ref.child(userId).child("lists").observeSingleEvent(of: .value) { (snapshot) in
+            print("observed")
+            var counter = 0
+            for child in snapshot.children {
+                let list = child as! DataSnapshot
+                let dictionary = list.value as! [String: AnyObject]
+                let listName = dictionary["listName"] as! String
+                newList.append(TaskList(name: listName))
+                
+                for child in list.childSnapshot(forPath: "tasks").children {
+                    let task = child as! DataSnapshot
+                    let dictionary = task.value as! [String: AnyObject]
+                    if let n = dictionary["name"] {
+                        if let p = dictionary["points"] {
+                            let name = n as! String
+                            let points = p as! String
+                            newList[counter].addTask(Task(name, Int(points)!))
+                        }
+                    }
+                }
+                counter += 1
+            }
+            listOfTaskLists = newList
             self.homeTableView.reloadData()
         }
-        
-//        ref.child("Bra grejer").observe(.value) { (snapshot) in
-//            print(snapshot.value as! [String: Int])
-//        }
+        ref.child(userId).child("info").observeSingleEvent(of: .value) { (snapshot) in
+            let dictionary = snapshot.value as? [String: AnyObject]
+            if let p = dictionary?["placeOfHistoryCell"] {
+                let placeOfHistoryCell = p as! String
+                self.placeOfHistoryCell = Int(placeOfHistoryCell)!
+                let tbc = self.tabBarController as! TabBarController
+                tbc.placeOfHistoryCell = self.placeOfHistoryCell
+            }
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,10 +121,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let addTaskViewController = segue.destination as? AddTaskViewController
         
-        addTaskViewController?.listOfTaskLists = listOfTaskLists
         addTaskViewController?.newTaskList = newTaskList
         addTaskViewController?.selectedRow = selectedRow
         addTaskViewController?.placeOfHistoryCell = placeOfHistoryCell
+        addTaskViewController?.userId = userId
     }
     
 

@@ -26,5 +26,9 @@ class TaskList {
         taskList.append(task)
     }
     
+    func addTasks() {
+        
+    }
+    
     
 }

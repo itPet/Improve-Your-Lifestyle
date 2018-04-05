@@ -19,9 +19,9 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var pointsTextField: UITextView!
     @IBOutlet weak var addedTasksTableView: UITableView!
     
+    var userId = ""
     var placeOfHistoryCell = 0
     var taskList = TaskList(name: "Orvar")
-    var listOfTaskLists = [TaskList]()
     var newTaskList = true
     var selectedRow = 0
     var currentList = "New list"
@@ -30,7 +30,6 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         addedTasksTableView.dataSource = self
         addedTasksTableView.delegate = self
-        print(placeOfHistoryCell)
         addedTasksTableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     
@@ -39,23 +38,15 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func doneBtnPressed(_ sender: UIButton) {
-        ref = Database.database().reference()
-        
         if newTaskList {
-            taskList.addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
-            taskList.name = titleTextField.text!
-            
-            ref.child("New list").child(nameTextField.text).setValue(pointsTextField.text)
+            addInputToLocalTaskListAsNewList()
+            addInputToFireBaseAsNewList()
         }
         else {
-            listOfTaskLists[selectedRow].addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
-            listOfTaskLists[selectedRow].name = titleTextField.text!
-            
-            ref.child(listOfTaskLists[selectedRow].name).child(nameTextField.text).setValue(pointsTextField.text)
-            
+            addInputToLocalTaskList()
+            addInputToFireBase()
         }
         popUpView.isHidden = true
-        
         addedTasksTableView.reloadData()
     }
     
@@ -83,6 +74,34 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell!
     }
     
+    func addInputToLocalTaskList () {
+        listOfTaskLists[selectedRow].addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
+        listOfTaskLists[selectedRow].name = titleTextField.text!
+    }
+    
+    func addInputToLocalTaskListAsNewList () {
+        taskList.addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
+        taskList.name = titleTextField.text!
+    }
+    
+    func addInputToFireBaseAsNewList () {
+        ref = Database.database().reference()
+        ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("listName").setValue(titleTextField.text!)
+        ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("tasks").child(String(taskList.taskList.count - 1)).child("name").setValue(nameTextField.text!)
+        ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("tasks").child(String(taskList.taskList.count - 1)).child("points").setValue(pointsTextField.text!)
+    }
+    
+    func addInputToFireBase () {
+        ref = Database.database().reference()
+        ref.child(userId).child("lists").child(String(selectedRow)).child("listName").setValue(titleTextField.text!)
+        ref.child(userId).child("lists").child(String(selectedRow)).child("tasks").child(String(listOfTaskLists[selectedRow].taskList.count - 1)).child("name").setValue(nameTextField.text!)
+        ref.child(userId).child("lists").child(String(selectedRow)).child("tasks").child(String(listOfTaskLists[selectedRow].taskList.count - 1)).child("points").setValue(pointsTextField.text!)
+    }
+    
+    
+    
+    
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let tbc = segue.destination as? TabBarController
@@ -91,7 +110,6 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
             listOfTaskLists.append(taskList)
         }
         
-        tbc?.listOfTaskLists = listOfTaskLists
         tbc?.placeOfHistoryCell = placeOfHistoryCell
     }
     
