@@ -31,7 +31,12 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfTaskLists[0].taskList.count + 1
+        if listOfTaskLists.count == 0 {
+            return 0
+        }
+        else {
+            return listOfTaskLists[0].taskList.count + 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

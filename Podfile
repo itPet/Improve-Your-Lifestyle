@@ -6,6 +6,7 @@ target 'Improve Your Lifestyle' do
   use_frameworks!
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'IQKeyboardManagerSwift'
   # Pods for Improve Your Lifestyle
 
   target 'Improve Your LifestyleTests' do

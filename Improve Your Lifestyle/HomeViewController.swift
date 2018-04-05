@@ -94,7 +94,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
         else {
-            lastCell.textLabel?.text = "add list"
+            lastCell.textLabel?.text = ""
             lastCell.textLabel?.textColor = UIColor.gray
             return lastCell
         }

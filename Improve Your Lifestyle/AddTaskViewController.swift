@@ -74,6 +74,10 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell!
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.addedTasksTableView.endEditing(true)
+    }
+    
     func addInputToLocalTaskList () {
         listOfTaskLists[selectedRow].addTask(Task(name: nameTextField.text, points: Int(pointsTextField.text)!))
         listOfTaskLists[selectedRow].name = titleTextField.text!
