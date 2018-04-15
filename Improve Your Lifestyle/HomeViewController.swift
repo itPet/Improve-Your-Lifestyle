@@ -10,8 +10,7 @@ import UIKit
 import Firebase
 
 var listOfTaskLists = [TaskList]()
-var test  = true
-
+var listOfHistory = [OneDaysHistory]()
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -21,6 +20,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var selectedRow = 0
     var placeOfHistoryCell = 0
     var currentList = "New list"
+    var dateToSave = ""
+    var startDate = ""
     
     @IBOutlet weak var homeTableView: UITableView!
     
@@ -29,16 +30,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let tbc = tabBarController as! TabBarController
         placeOfHistoryCell = tbc.placeOfHistoryCell
         userId = tbc.userId
+        dateToSave = tbc.dateToSave
+        startDate = tbc.startDate
+        
         homeTableView.tableFooterView = UIView(frame: CGRect.zero)
         getDataFromFirebase()
-        print("homeDidLoad")
     }
     
-    func getDataFromFirebase() {
+    func getListsFromFirebase() {
         var newList = [TaskList]()
         ref = Database.database().reference()
         ref.child(userId).child("lists").observeSingleEvent(of: .value) { (snapshot) in
-            print("observed")
             var counter = 0
             for child in snapshot.children {
                 let list = child as! DataSnapshot
@@ -51,27 +53,92 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     let dictionary = task.value as! [String: AnyObject]
                     if let n = dictionary["name"] {
                         if let p = dictionary["points"] {
-                            let name = n as! String
-                            let points = p as! String
-                            newList[counter].addTask(Task(name, Int(points)!))
+                            if let c = dictionary["completed"] {
+                                let name = n as! String
+                                let points = p as! String
+                                let completed = c as! String
+                                newList[counter].addTask(Task(name, Int(points)!, Bool(completed)!))
+                            }
                         }
                     }
                 }
                 counter += 1
             }
             listOfTaskLists = newList
+            for list in listOfTaskLists {
+                for task in list.taskList{
+                    print("\(task.name) \(task.completed)")
+                }
+                list.taskList.sort()
+                print("")
+                print("sorted")
+                for task in list.taskList{
+                    print("\(task.name) \(task.completed)")
+                }
+            }
+            
             self.homeTableView.reloadData()
         }
+    }
+    
+    func getHistoryFromFirebase () {
+        var newList = [OneDaysHistory]()
+        ref = Database.database().reference()
+        
+        ref.child(userId).child("history").observeSingleEvent(of: .value) { (snapshot) in
+            for child in snapshot.children {
+                let history = child as! DataSnapshot
+                let dictionary = history.value as! [String: AnyObject]
+                let points = dictionary["points"] as! String
+                let percent = dictionary["percent"] as! String
+                let date = dictionary["date"] as! String
+                let day = dictionary["day"] as! String
+                newList.append(OneDaysHistory(points: Int(points)!, percent: Float(percent)!, date: date, day: day))
+            }
+            listOfHistory = newList
+        }
+    }
+    
+    func getInfoFromFirebase() {
+        ref = Database.database().reference()
+        let tbc = self.tabBarController as! TabBarController
+        
         ref.child(userId).child("info").observeSingleEvent(of: .value) { (snapshot) in
             let dictionary = snapshot.value as? [String: AnyObject]
             if let p = dictionary?["placeOfHistoryCell"] {
                 let placeOfHistoryCell = p as! String
                 self.placeOfHistoryCell = Int(placeOfHistoryCell)!
-                let tbc = self.tabBarController as! TabBarController
                 tbc.placeOfHistoryCell = self.placeOfHistoryCell
             }
             
+            if let l = dictionary?["startDate"]{
+                self.dateToSave = l as! String
+                tbc.dateToSave = l as! String
+            } else {
+                let dateFormatter = DateFormatter()
+                let currentDate = Date()
+                dateFormatter.dateFormat = "yyyyMMdd"
+                let dateAsString = dateFormatter.string(from: currentDate)
+                
+                self.startDate = dateAsString
+                tbc.startDate = dateAsString
+                self.dateToSave = dateAsString
+                tbc.dateToSave = dateAsString
+                self.ref.child(self.userId).child("info").child("startDate").setValue(dateAsString)
+                self.ref.child(self.userId).child("info").child("dateToSave").setValue(dateAsString)
+            }
+            
+            if let n = dictionary?["dateToSave"]{
+                self.dateToSave = n as! String
+                tbc.dateToSave = n as! String
+            }
         }
+    }
+    
+    func getDataFromFirebase() {
+        getListsFromFirebase()
+        getHistoryFromFirebase()
+        getInfoFromFirebase()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +192,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         addTaskViewController?.selectedRow = selectedRow
         addTaskViewController?.placeOfHistoryCell = placeOfHistoryCell
         addTaskViewController?.userId = userId
+        addTaskViewController?.dateToSave = dateToSave
+        addTaskViewController?.startDate = startDate
     }
     
 

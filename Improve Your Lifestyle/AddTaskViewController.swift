@@ -25,6 +25,8 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     var newTaskList = true
     var selectedRow = 0
     var currentList = "New list"
+    var dateToSave = ""
+    var startDate = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +95,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("listName").setValue(titleTextField.text!)
         ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("tasks").child(String(taskList.taskList.count - 1)).child("name").setValue(nameTextField.text!)
         ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("tasks").child(String(taskList.taskList.count - 1)).child("points").setValue(pointsTextField.text!)
+        ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("tasks").child(String(taskList.taskList.count - 1)).child("completed").setValue("false")
     }
     
     func addInputToFireBase () {
@@ -100,12 +103,8 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         ref.child(userId).child("lists").child(String(selectedRow)).child("listName").setValue(titleTextField.text!)
         ref.child(userId).child("lists").child(String(selectedRow)).child("tasks").child(String(listOfTaskLists[selectedRow].taskList.count - 1)).child("name").setValue(nameTextField.text!)
         ref.child(userId).child("lists").child(String(selectedRow)).child("tasks").child(String(listOfTaskLists[selectedRow].taskList.count - 1)).child("points").setValue(pointsTextField.text!)
+        ref.child(userId).child("lists").child(String(selectedRow)).child("tasks").child(String(listOfTaskLists[selectedRow].taskList.count - 1)).child("completed").setValue("false")
     }
-    
-    
-    
-    
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let tbc = segue.destination as? TabBarController
@@ -115,6 +114,8 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         tbc?.placeOfHistoryCell = placeOfHistoryCell
+        tbc?.dateToSave = dateToSave
+        tbc?.startDate = startDate
     }
     
     

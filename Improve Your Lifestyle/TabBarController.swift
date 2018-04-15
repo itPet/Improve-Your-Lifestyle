@@ -12,7 +12,8 @@ class TabBarController: UITabBarController {
     
     var userId = "playerId"
     var placeOfHistoryCell = 0
-    //var listOfTaskLists = [TaskList]()
+    var dateToSave = ""
+    var startDate = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

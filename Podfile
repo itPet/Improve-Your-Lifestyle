@@ -7,6 +7,8 @@ target 'Improve Your Lifestyle' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'IQKeyboardManagerSwift'
+  pod 'GradientProgressBar', '~> 1.2'
+  pod 'ChartProgressBar', '~> 1.0'
   # Pods for Improve Your Lifestyle
 
   target 'Improve Your LifestyleTests' do

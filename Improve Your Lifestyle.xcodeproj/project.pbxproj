@@ -18,6 +18,7 @@
 		657DBD0720500FEE0011A09A /* Improve_Your_LifestyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DBD0620500FEE0011A09A /* Improve_Your_LifestyleTests.swift */; };
 		659AE3D32062573400E36027 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659AE3D22062573400E36027 /* TaskList.swift */; };
 		65A9E1EE205FE5D20072E296 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A9E1ED205FE5D20072E296 /* Task.swift */; };
+		65B15EE620835B6D00CB09E2 /* OneDaysHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B15EE520835B6D00CB09E2 /* OneDaysHistory.swift */; };
 		65B2EBC120723230004AB029 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65B2EBC020723230004AB029 /* GoogleService-Info.plist */; };
 		65F4069E2073771A003C0FD8 /* LastHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */; };
 		65F861A4206912B5001EEB61 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F861A3206912B5001EEB61 /* HomeViewController.swift */; };
@@ -54,6 +55,7 @@
 		657DBD0820500FEE0011A09A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		659AE3D22062573400E36027 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		65A9E1ED205FE5D20072E296 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		65B15EE520835B6D00CB09E2 /* OneDaysHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDaysHistory.swift; sourceTree = "<group>"; };
 		65B2EBC020723230004AB029 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastHomeTableViewCell.swift; sourceTree = "<group>"; };
 		65F861A3206912B5001EEB61 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				65B2EBC020723230004AB029 /* GoogleService-Info.plist */,
 				653D8B74206BF5CB0029FCD9 /* SampleData.swift */,
 				65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */,
+				65B15EE520835B6D00CB09E2 /* OneDaysHistory.swift */,
 			);
 			path = "Improve Your Lifestyle";
 			sourceTree = "<group>";
@@ -265,14 +268,18 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Improve Your Lifestyle/Pods-Improve Your Lifestyle-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ChartProgressBar/ChartProgressBar.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GradientProgressBar/GradientProgressBar.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChartProgressBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GradientProgressBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -374,6 +381,7 @@
 				65F4069E2073771A003C0FD8 /* LastHomeTableViewCell.swift in Sources */,
 				657DBCF220500FEE0011A09A /* AppDelegate.swift in Sources */,
 				65A9E1EE205FE5D20072E296 /* Task.swift in Sources */,
+				65B15EE620835B6D00CB09E2 /* OneDaysHistory.swift in Sources */,
 				6568306C205FDDBD00868996 /* AddTaskViewController.swift in Sources */,
 				653D8B43206BE9020029FCD9 /* TabBarController.swift in Sources */,
 				653D8B41206B9DC60029FCD9 /* ToDayViewController.swift in Sources */,
