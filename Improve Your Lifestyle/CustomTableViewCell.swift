@@ -1,21 +1,19 @@
 //
-//  LastHomeTableViewCell.swift
+//  CustomTableViewCell.swift
 //  Improve Your Lifestyle
 //
-//  Created by Peter Karlsson on 2018-04-03.
+//  Created by Peter Karlsson on 2018-04-16.
 //  Copyright © 2018 Peter Karlsson. All rights reserved.
 //
 
 import UIKit
 
-class LastHomeTableViewCell: UITableViewCell {
+class CustomTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var pointsLabel: UILabel!
+    @IBOutlet weak var cellView: UIView!
     
-    @IBOutlet weak var textField: UITextField!
-    @IBAction func textFieldAction(_ sender: UITextField) {
-        print("action")
-        
-        
-    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,5 +25,5 @@ class LastHomeTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
 }

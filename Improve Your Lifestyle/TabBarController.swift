@@ -10,13 +10,13 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    var userId = "playerId"
     var placeOfHistoryCell = 0
     var dateToSave = ""
     var startDate = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func didReceiveMemoryWarning() {

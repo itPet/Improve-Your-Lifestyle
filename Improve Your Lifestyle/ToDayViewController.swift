@@ -13,28 +13,27 @@ import ChartProgressBar
 class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var ref: DatabaseReference!
-    var userId = ""
-    var placeOfHistoryCell = 0
+    var placeOfHistoryCell = -1
     var dateToSave = ""
     var startDate = ""
+    var firstTimeLoading = true
     
-    //För att få tag på rätt element i TaskList behövs det substraheras 1 när man skriver till celler nedanför statistiken.
-    var subtract = 0
-    var maxPoints : Float = 0.0
-    var currentPoints : Float = 0.0
+    var activeList = -1
+    var maxPoints : Float = 0
+    var currentPoints : Float = 0
     @IBOutlet weak var toDayTableView: UITableView!
-    @IBOutlet weak var statistics: ChartProgressBar!
-    @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var pointsLabel: UILabel!
+    @IBOutlet weak var pointsLabel2: UILabel!
+    @IBOutlet weak var progressDoneView: UIView!
+    @IBOutlet weak var progressLeftView: UIView!
+    @IBOutlet weak var todayIcon: UITabBarItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        
         let tbc = tabBarController as! TabBarController
-        
+        view.backgroundColor = UIColor.black
         placeOfHistoryCell = tbc.placeOfHistoryCell
-        userId = tbc.userId
         dateToSave = tbc.dateToSave
         startDate = tbc.startDate
         
@@ -44,34 +43,167 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
         updateProgressBar()
         saveHistory()
         updateProgressBar()
-        updateHistoryView()
-        //progressBar.transform = progressBar.transform.scaledBy(x: 1, y: 5)
-        //progressBar.transform = CGAffineTransform(scaleX: 1, y: 20)
-
-        
     }
     
-    func updateHistoryView() {
+    override func viewWillAppear(_ animated: Bool) {
+        toDayTableView.reloadData()
+        updateProgressBar()
+        let myIndexPath = IndexPath(row: placeOfHistoryCell, section: 0)
+        toDayTableView.scrollToRow(at: myIndexPath, at: .top, animated: false)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
+    func updateActiveList() {
+        for i in 0...listOfTaskLists.count - 1 {
+            if listOfTaskLists[i].isActive == true {
+                activeList = i
+            }
+        }
+    }
+    
+    // MARK: - TableView
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if listOfTaskLists.count == 0 {
+            return 0
+        }
+        else {
+            return listOfTaskLists[activeList].taskList.count + 2
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == placeOfHistoryCell {
+            return 210
+        } else if indexPath.row == 0 {
+            return 80
+        } else if indexPath.row == listOfTaskLists[activeList].taskList.count + 1 {
+            if tableView.frame.size.height - CGFloat(210 + (60 * (listOfTaskLists[activeList].taskList.count - placeOfHistoryCell))) < 1 {
+                return 0
+            } else {
+                return tableView.frame.size.height - CGFloat(210 + (60 * (listOfTaskLists[activeList].taskList.count - placeOfHistoryCell)))
+            }
+        } else {
+            return 50
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = Bundle.main.loadNibNamed("CustomTableViewCell", owner: self, options: nil)?.first as! CustomTableViewCell
+        let cellWithHistory = Bundle.main.loadNibNamed("TableViewHistoryCell", owner: self, options: nil)?.first as! TableViewHistoryCell
+        let emptyCell = Bundle.main.loadNibNamed("EmptyTableViewCell", owner: self, options: nil)?.first as! EmptyTableViewCell
+    
+        var subtract = 0
+        if indexPath.row > placeOfHistoryCell {
+            subtract = 1
+        }
+        if indexPath.row == placeOfHistoryCell {
+            updateHistoryView(cellWithHistory: cellWithHistory)
+            cellWithHistory.selectionStyle = .none
+            return cellWithHistory
+        }
+        else if indexPath.row == listOfTaskLists[activeList].taskList.count + 1 {
+            if firstTimeLoading {
+                let myIndexPath = IndexPath(row: placeOfHistoryCell, section: 0)
+                tableView.scrollToRow(at: myIndexPath, at: .top, animated: false)
+            }
+            firstTimeLoading = false
+            emptyCell.isUserInteractionEnabled = false
+            return emptyCell
+        }
+        else {
+            cell.nameLabel.text = listOfTaskLists[activeList].taskList[indexPath.row - subtract].name
+            cell.pointsLabel.text = String(listOfTaskLists[activeList].taskList[indexPath.row - subtract].points)
+            cell.cellView.layer.cornerRadius = 15
+            cell.selectionStyle = .none
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tbc = tabBarController as! TabBarController
+        
+        if indexPath.row > placeOfHistoryCell {
+            let elementToMove = listOfTaskLists[activeList].taskList[indexPath.row - 1]
+            ref.child(userId).child("lists").child("0").child("tasks").child(String(indexPath.row - 1)).child("completed").setValue("true")
+            elementToMove.completed = true
+            listOfTaskLists[activeList].taskList.remove(at: indexPath.row - 1)
+            listOfTaskLists[activeList].taskList.insert(elementToMove, at: placeOfHistoryCell)
+            
+            placeOfHistoryCell += 1
+        }
+        
+        if indexPath.row < placeOfHistoryCell {
+            let elementToMove = listOfTaskLists[activeList].taskList[indexPath.row]
+            elementToMove.completed = false
+            ref.child(userId).child("lists").child("0").child("tasks").child(String(indexPath.row)).child("completed").setValue("false")
+            listOfTaskLists[activeList].taskList.remove(at: indexPath.row)
+            placeOfHistoryCell -= 1
+            listOfTaskLists[activeList].taskList.insert(elementToMove, at: placeOfHistoryCell)
+        }
+        
+        tbc.placeOfHistoryCell = placeOfHistoryCell
+        ref.child(userId).child("info").child("placeOfHistoryCell").setValue(String(placeOfHistoryCell))
+        toDayTableView.reloadData()
+        updateProgressBar()
+        if indexPath.row > placeOfHistoryCell - 1 && indexPath.row - placeOfHistoryCell < 7 {
+            let myIndexPath = IndexPath(row: placeOfHistoryCell, section: 0)
+            tableView.scrollToRow(at: myIndexPath, at: .top, animated: false)
+            print("select")
+        }
+    }
+    
+    func updateHistoryView(cellWithHistory: TableViewHistoryCell) {
         var data: [BarData] = []
         var num = 0
-        
-        if listOfHistory.count > 6 {
-            num = 7
-        } else {
-            num = listOfHistory.count
+
+        if listOfHistory.count > 0 {
+            if listOfHistory.count > 6 {
+                num = 7
+            } else {
+                num = listOfHistory.count
+            }
+            for i in 0...(num - 1) {
+                let barTitle = listOfHistory[listOfHistory.count - (num-i)].day
+                let barValue = listOfHistory[listOfHistory.count - (num-i)].percent
+                let pinText = listOfHistory[listOfHistory.count - (num-i)].points
+                data.append(BarData.init(barTitle: barTitle, barValue: barValue, pinText: String(pinText)))
+            }
+            cellWithHistory.chartProgressView.data = data
+            cellWithHistory.chartProgressView.barsCanBeClick = false
+            cellWithHistory.chartProgressView.barHeight = 150
+            cellWithHistory.chartProgressView.maxValue = 100
+            cellWithHistory.chartProgressView.barTitleColor = UIColor(red: 0, green: 87/255.0, blue: 180/255.0, alpha: 1)
+            cellWithHistory.chartProgressView.progressColor = UIColor(red: 0, green: 249/255.0, blue: 0, alpha: 1)
+            cellWithHistory.chartProgressView.emptyColor = UIColor(red: 0, green: 87/255.0, blue: 180/255.0, alpha: 1)
+            cellWithHistory.chartProgressView.build()
         }
-        for i in 0...(num - 1) {
-            let barTitle = listOfHistory[listOfHistory.count - (num-i)].day
-            let barValue = listOfHistory[listOfHistory.count - (num-i)].percent / 10
-            let pinText = listOfHistory[listOfHistory.count - (num-i)].points
-            data.append(BarData.init(barTitle: barTitle, barValue: barValue, pinText: String(pinText)))
-        }
-        statistics.data = data
-        statistics.barsCanBeClick = true
-        statistics.maxValue = 10.0
-        statistics.build()
     }
     
+    // MARK: - Help functions
+    func calculateMaxPoints() {
+        for task in listOfTaskLists[activeList].taskList {
+            maxPoints += Float(task.points)
+        }
+    }
+    
+    func updateProgressBar() {
+        currentPoints = 0
+        if placeOfHistoryCell != 0 {
+            for i in 0...placeOfHistoryCell-1 {
+                currentPoints += Float(listOfTaskLists[activeList].taskList[i].points)
+            }
+        }
+        pointsLabel.text = "\(Int(currentPoints))/\(Int(maxPoints))"
+        pointsLabel2.text = "\(Int(currentPoints))/\(Int(maxPoints))"
+        progressLeftView.layer.cornerRadius = progressLeftView.frame.size.height / 2
+        progressDoneView.layer.cornerRadius = progressDoneView.frame.size.height / 2
+        progressDoneView.frame.size.width = CGFloat((Float(progressLeftView.frame.size.width) / maxPoints) * currentPoints)
+    }
+    
+    // MARK: - FireBase
     func saveHistory() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
@@ -79,7 +211,7 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
         dayFormatter.dateFormat = "EEE"
         
         let dateToSaveAsDate = dateFormatter.date(from: dateToSave)
-        let currentDateAsString = "20180430"//dateFormatter.string(from: Date())
+        let currentDateAsString = dateFormatter.string(from: Date())
         let currentDate = dateFormatter.date(from: currentDateAsString)
         
         let timeDifference = dateToSaveAsDate?.timeIntervalSince(currentDate!)
@@ -94,7 +226,7 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
             dateToSave = currentDateAsString
             ref.child(userId).child("info").child("placeOfHistoryCell").setValue("0")
             ref.child(userId).child("info").child("dateToSave").setValue(String(currentDateAsString))
-            for i in 0...listOfTaskLists[0].taskList.count - 1 {
+            for i in 0...listOfTaskLists[activeList].taskList.count - 1 {
                 ref.child(userId).child("lists").child("0").child("tasks").child(String(i)).child("completed").setValue("false")
             }
         }
@@ -114,85 +246,7 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    func calculateMaxPoints() {
-        for task in listOfTaskLists[0].taskList {
-            maxPoints += Float(task.points)
-        }
-    }
-    
-    func updateProgressBar() {
-        currentPoints = 0
-        if placeOfHistoryCell != 0 {
-            for i in 0...placeOfHistoryCell-1 {
-                currentPoints += Float(listOfTaskLists[0].taskList[i].points)
-            }
-        }
-        pointsLabel.text = "\(Int(currentPoints))/\(Int(maxPoints))"
-        progressBar.progress = currentPoints / maxPoints
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if listOfTaskLists.count == 0 {
-            return 0
-        }
-        else {
-            return listOfTaskLists[0].taskList.count + 1
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "toDayCell", for: indexPath)
-        let historyCell = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath)
-        
-        subtract = 0
-        
-        if indexPath.row > placeOfHistoryCell {
-            subtract = 1
-        }
-        if indexPath.row == placeOfHistoryCell {
-            historyCell.backgroundColor = UIColor.red
-            historyCell.textLabel?.text = "Statistik"
-            return historyCell
-        }
-        else {
-            cell.textLabel?.text = listOfTaskLists[0].taskList[indexPath.row - subtract].name
-            cell.detailTextLabel?.text = String(listOfTaskLists[0].taskList[indexPath.row - subtract].points)
-            return cell
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //ref = Database.database().reference()
-        let tbc = tabBarController as! TabBarController
-        
-        if indexPath.row > placeOfHistoryCell {
-            let elementToMove = listOfTaskLists[0].taskList[indexPath.row - 1]
-            ref.child(userId).child("lists").child("0").child("tasks").child(String(indexPath.row - 1)).child("completed").setValue("true")
-            elementToMove.completed = true
-            listOfTaskLists[0].taskList.remove(at: indexPath.row - 1)
-            listOfTaskLists[0].taskList.insert(elementToMove, at: placeOfHistoryCell)
-            
-            placeOfHistoryCell += 1
-        }
-        
-        if indexPath.row < placeOfHistoryCell {
-            let elementToMove = listOfTaskLists[0].taskList[indexPath.row]
-            elementToMove.completed = false
-            ref.child(userId).child("lists").child("0").child("tasks").child(String(indexPath.row)).child("completed").setValue("false")
-            listOfTaskLists[0].taskList.remove(at: indexPath.row)
-            placeOfHistoryCell -= 1
-            listOfTaskLists[0].taskList.insert(elementToMove, at: placeOfHistoryCell)
-        }
-        
-        tbc.placeOfHistoryCell = placeOfHistoryCell
-        ref.child(userId).child("info").child("placeOfHistoryCell").setValue(String(placeOfHistoryCell))
-        toDayTableView.reloadData()
-        updateProgressBar()
-    }
+    // MARK: - Functions I don't use
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

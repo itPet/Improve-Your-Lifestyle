@@ -5,7 +5,7 @@ class Bar: UIView {
     // MARK: - Private Variables
     fileprivate var backgroundImage: UIView!
     fileprivate var progressView: UIImageView!
-    fileprivate let animationDuration: Double = 0.6
+    fileprivate let animationDuration: Double = 0
     fileprivate var barRadius: Float? = nil
     public var isDisabled: Bool = false
     

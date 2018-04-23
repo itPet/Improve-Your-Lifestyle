@@ -9,18 +9,30 @@
 /* Begin PBXBuildFile section */
 		653D8B41206B9DC60029FCD9 /* ToDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653D8B40206B9DC60029FCD9 /* ToDayViewController.swift */; };
 		653D8B43206BE9020029FCD9 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653D8B42206BE9020029FCD9 /* TabBarController.swift */; };
-		653D8B75206BF5CB0029FCD9 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653D8B74206BF5CB0029FCD9 /* SampleData.swift */; };
 		6568306C205FDDBD00868996 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568306B205FDDBD00868996 /* AddTaskViewController.swift */; };
 		657DBCF220500FEE0011A09A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DBCF120500FEE0011A09A /* AppDelegate.swift */; };
 		657DBCF720500FEE0011A09A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 657DBCF520500FEE0011A09A /* Main.storyboard */; };
 		657DBCF920500FEE0011A09A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 657DBCF820500FEE0011A09A /* Assets.xcassets */; };
 		657DBCFC20500FEE0011A09A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 657DBCFA20500FEE0011A09A /* LaunchScreen.storyboard */; };
 		657DBD0720500FEE0011A09A /* Improve_Your_LifestyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657DBD0620500FEE0011A09A /* Improve_Your_LifestyleTests.swift */; };
+		6587F8372089027D001985B0 /* AddListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6587F8352089027D001985B0 /* AddListTableViewCell.swift */; };
+		6587F8382089027D001985B0 /* AddListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6587F8362089027D001985B0 /* AddListTableViewCell.xib */; };
+		6587F8692089E875001985B0 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6587F8672089E875001985B0 /* HomeTableViewCell.swift */; };
+		6587F86A2089E875001985B0 /* HomeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6587F8682089E875001985B0 /* HomeTableViewCell.xib */; };
+		659586FE20877B610098C17A /* EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659586FC20877B610098C17A /* EmptyTableViewCell.swift */; };
+		659586FF20877B610098C17A /* EmptyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 659586FD20877B610098C17A /* EmptyTableViewCell.xib */; };
 		659AE3D32062573400E36027 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659AE3D22062573400E36027 /* TaskList.swift */; };
 		65A9E1EE205FE5D20072E296 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A9E1ED205FE5D20072E296 /* Task.swift */; };
+		65AF4879208C85790011D552 /* DownloadTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AF4878208C85790011D552 /* DownloadTasksViewController.swift */; };
+		65AF487C208CC6B40011D552 /* DownloadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AF487A208CC6B40011D552 /* DownloadTableViewCell.swift */; };
+		65AF487D208CC6B40011D552 /* DownloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65AF487B208CC6B40011D552 /* DownloadTableViewCell.xib */; };
 		65B15EE620835B6D00CB09E2 /* OneDaysHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B15EE520835B6D00CB09E2 /* OneDaysHistory.swift */; };
+		65B15F492084CAE300CB09E2 /* TableViewHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B15F472084CAE300CB09E2 /* TableViewHistoryCell.swift */; };
+		65B15F4A2084CAE300CB09E2 /* TableViewHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65B15F482084CAE300CB09E2 /* TableViewHistoryCell.xib */; };
 		65B2EBC120723230004AB029 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65B2EBC020723230004AB029 /* GoogleService-Info.plist */; };
-		65F4069E2073771A003C0FD8 /* LastHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */; };
+		65C9C18D208A4F37007468F1 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C9C18C208A4F37007468F1 /* DownloadViewController.swift */; };
+		65CBA36B2084F72F00119F4E /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CBA3692084F72F00119F4E /* CustomTableViewCell.swift */; };
+		65CBA36C2084F72F00119F4E /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65CBA36A2084F72F00119F4E /* CustomTableViewCell.xib */; };
 		65F861A4206912B5001EEB61 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F861A3206912B5001EEB61 /* HomeViewController.swift */; };
 		6BCE79EB937229024808F71D /* Pods_Improve_Your_LifestyleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A827100BF5E76CC0AF246BED /* Pods_Improve_Your_LifestyleTests.framework */; };
 		C44B1B462E66227D8A04821C /* Pods_Improve_Your_Lifestyle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46580329AED0BD91C6BD85B /* Pods_Improve_Your_Lifestyle.framework */; };
@@ -42,7 +54,6 @@
 		53BBCEA8D42A4860FE43524C /* Pods-Improve Your LifestyleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Improve Your LifestyleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Improve Your LifestyleTests/Pods-Improve Your LifestyleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		653D8B40206B9DC60029FCD9 /* ToDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDayViewController.swift; sourceTree = "<group>"; };
 		653D8B42206BE9020029FCD9 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		653D8B74206BF5CB0029FCD9 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		6568306B205FDDBD00868996 /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		657DBCEE20500FEE0011A09A /* Improve Your Lifestyle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Improve Your Lifestyle.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		657DBCF120500FEE0011A09A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -53,11 +64,24 @@
 		657DBD0220500FEE0011A09A /* Improve Your LifestyleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Improve Your LifestyleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		657DBD0620500FEE0011A09A /* Improve_Your_LifestyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Improve_Your_LifestyleTests.swift; sourceTree = "<group>"; };
 		657DBD0820500FEE0011A09A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6587F8352089027D001985B0 /* AddListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListTableViewCell.swift; sourceTree = "<group>"; };
+		6587F8362089027D001985B0 /* AddListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddListTableViewCell.xib; sourceTree = "<group>"; };
+		6587F8672089E875001985B0 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		6587F8682089E875001985B0 /* HomeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewCell.xib; sourceTree = "<group>"; };
+		659586FC20877B610098C17A /* EmptyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTableViewCell.swift; sourceTree = "<group>"; };
+		659586FD20877B610098C17A /* EmptyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyTableViewCell.xib; sourceTree = "<group>"; };
 		659AE3D22062573400E36027 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		65A9E1ED205FE5D20072E296 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		65AF4878208C85790011D552 /* DownloadTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTasksViewController.swift; sourceTree = "<group>"; };
+		65AF487A208CC6B40011D552 /* DownloadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTableViewCell.swift; sourceTree = "<group>"; };
+		65AF487B208CC6B40011D552 /* DownloadTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DownloadTableViewCell.xib; sourceTree = "<group>"; };
 		65B15EE520835B6D00CB09E2 /* OneDaysHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDaysHistory.swift; sourceTree = "<group>"; };
+		65B15F472084CAE300CB09E2 /* TableViewHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHistoryCell.swift; sourceTree = "<group>"; };
+		65B15F482084CAE300CB09E2 /* TableViewHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewHistoryCell.xib; sourceTree = "<group>"; };
 		65B2EBC020723230004AB029 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastHomeTableViewCell.swift; sourceTree = "<group>"; };
+		65C9C18C208A4F37007468F1 /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
+		65CBA3692084F72F00119F4E /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		65CBA36A2084F72F00119F4E /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		65F861A3206912B5001EEB61 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A827100BF5E76CC0AF246BED /* Pods_Improve_Your_LifestyleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Improve_Your_LifestyleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C46580329AED0BD91C6BD85B /* Pods_Improve_Your_Lifestyle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Improve_Your_Lifestyle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,16 +145,28 @@
 				65F861A3206912B5001EEB61 /* HomeViewController.swift */,
 				6568306B205FDDBD00868996 /* AddTaskViewController.swift */,
 				653D8B40206B9DC60029FCD9 /* ToDayViewController.swift */,
+				65C9C18C208A4F37007468F1 /* DownloadViewController.swift */,
+				65AF4878208C85790011D552 /* DownloadTasksViewController.swift */,
 				65A9E1ED205FE5D20072E296 /* Task.swift */,
 				659AE3D22062573400E36027 /* TaskList.swift */,
+				65B15EE520835B6D00CB09E2 /* OneDaysHistory.swift */,
 				657DBCF520500FEE0011A09A /* Main.storyboard */,
 				657DBCF820500FEE0011A09A /* Assets.xcassets */,
 				657DBCFA20500FEE0011A09A /* LaunchScreen.storyboard */,
 				657DBCFD20500FEE0011A09A /* Info.plist */,
 				65B2EBC020723230004AB029 /* GoogleService-Info.plist */,
-				653D8B74206BF5CB0029FCD9 /* SampleData.swift */,
-				65F4069D2073771A003C0FD8 /* LastHomeTableViewCell.swift */,
-				65B15EE520835B6D00CB09E2 /* OneDaysHistory.swift */,
+				65B15F472084CAE300CB09E2 /* TableViewHistoryCell.swift */,
+				65B15F482084CAE300CB09E2 /* TableViewHistoryCell.xib */,
+				65CBA3692084F72F00119F4E /* CustomTableViewCell.swift */,
+				65CBA36A2084F72F00119F4E /* CustomTableViewCell.xib */,
+				659586FC20877B610098C17A /* EmptyTableViewCell.swift */,
+				659586FD20877B610098C17A /* EmptyTableViewCell.xib */,
+				6587F8352089027D001985B0 /* AddListTableViewCell.swift */,
+				6587F8362089027D001985B0 /* AddListTableViewCell.xib */,
+				6587F8672089E875001985B0 /* HomeTableViewCell.swift */,
+				6587F8682089E875001985B0 /* HomeTableViewCell.xib */,
+				65AF487A208CC6B40011D552 /* DownloadTableViewCell.swift */,
+				65AF487B208CC6B40011D552 /* DownloadTableViewCell.xib */,
 			);
 			path = "Improve Your Lifestyle";
 			sourceTree = "<group>";
@@ -244,10 +280,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				659586FF20877B610098C17A /* EmptyTableViewCell.xib in Resources */,
+				6587F8382089027D001985B0 /* AddListTableViewCell.xib in Resources */,
 				657DBCFC20500FEE0011A09A /* LaunchScreen.storyboard in Resources */,
 				657DBCF920500FEE0011A09A /* Assets.xcassets in Resources */,
+				6587F86A2089E875001985B0 /* HomeTableViewCell.xib in Resources */,
+				65CBA36C2084F72F00119F4E /* CustomTableViewCell.xib in Resources */,
+				65B15F4A2084CAE300CB09E2 /* TableViewHistoryCell.xib in Resources */,
 				65B2EBC120723230004AB029 /* GoogleService-Info.plist in Resources */,
 				657DBCF720500FEE0011A09A /* Main.storyboard in Resources */,
+				65AF487D208CC6B40011D552 /* DownloadTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,15 +420,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				659AE3D32062573400E36027 /* TaskList.swift in Sources */,
-				65F4069E2073771A003C0FD8 /* LastHomeTableViewCell.swift in Sources */,
+				65AF487C208CC6B40011D552 /* DownloadTableViewCell.swift in Sources */,
+				6587F8372089027D001985B0 /* AddListTableViewCell.swift in Sources */,
+				6587F8692089E875001985B0 /* HomeTableViewCell.swift in Sources */,
 				657DBCF220500FEE0011A09A /* AppDelegate.swift in Sources */,
 				65A9E1EE205FE5D20072E296 /* Task.swift in Sources */,
 				65B15EE620835B6D00CB09E2 /* OneDaysHistory.swift in Sources */,
 				6568306C205FDDBD00868996 /* AddTaskViewController.swift in Sources */,
+				65AF4879208C85790011D552 /* DownloadTasksViewController.swift in Sources */,
 				653D8B43206BE9020029FCD9 /* TabBarController.swift in Sources */,
+				65CBA36B2084F72F00119F4E /* CustomTableViewCell.swift in Sources */,
+				65B15F492084CAE300CB09E2 /* TableViewHistoryCell.swift in Sources */,
+				65C9C18D208A4F37007468F1 /* DownloadViewController.swift in Sources */,
 				653D8B41206B9DC60029FCD9 /* ToDayViewController.swift in Sources */,
 				65F861A4206912B5001EEB61 /* HomeViewController.swift in Sources */,
-				653D8B75206BF5CB0029FCD9 /* SampleData.swift in Sources */,
+				659586FE20877B610098C17A /* EmptyTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

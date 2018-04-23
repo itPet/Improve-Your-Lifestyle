@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="KGk-i7-Jjw" customClass="CustomTableViewCell" customModule="Improve_Your_Lifestyle" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="286" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="286" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cze-7s-qPb">
+                        <rect key="frame" x="10" y="15" width="266" height="39.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nri-Vt-pEG">
+                                <rect key="frame" x="13" y="9.5" width="207" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdb-Rc-Dfs">
+                                <rect key="frame" x="228" y="9" width="30" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="5nY-U0-Aps"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="v3Z-Xn-GVW"/>
+                                    <constraint firstAttribute="height" constant="23" id="wWq-p9-cSQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.34268241300901969" blue="0.70555869509658764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Xdb-Rc-Dfs" firstAttribute="leading" secondItem="nri-Vt-pEG" secondAttribute="trailing" constant="8" id="1ms-rt-B2w"/>
+                            <constraint firstAttribute="trailing" secondItem="Xdb-Rc-Dfs" secondAttribute="trailing" constant="8" id="DBn-sR-OE2"/>
+                            <constraint firstItem="Xdb-Rc-Dfs" firstAttribute="centerY" secondItem="Cze-7s-qPb" secondAttribute="centerY" id="DKk-Pa-cxj"/>
+                            <constraint firstItem="nri-Vt-pEG" firstAttribute="leading" secondItem="Cze-7s-qPb" secondAttribute="leading" constant="13" id="KML-Gd-Leh"/>
+                            <constraint firstItem="nri-Vt-pEG" firstAttribute="centerY" secondItem="Cze-7s-qPb" secondAttribute="centerY" id="Orc-Ks-7Cs"/>
+                            <constraint firstAttribute="height" constant="39.5" id="f1L-Fn-j85"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Cze-7s-qPb" secondAttribute="bottom" constant="5" id="1uc-N5-bXm"/>
+                    <constraint firstItem="Cze-7s-qPb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="C9Z-HV-bkT"/>
+                    <constraint firstAttribute="trailing" secondItem="Cze-7s-qPb" secondAttribute="trailing" constant="10" id="uW4-by-NCF"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="cellView" destination="Cze-7s-qPb" id="Kjn-Fq-BJy"/>
+                <outlet property="nameLabel" destination="nri-Vt-pEG" id="MEU-Uq-6Yt"/>
+                <outlet property="pointsLabel" destination="Xdb-Rc-Dfs" id="PQc-h9-ko6"/>
+            </connections>
+            <point key="canvasLocation" x="9" y="75"/>
+        </tableViewCell>
+    </objects>
+</document>

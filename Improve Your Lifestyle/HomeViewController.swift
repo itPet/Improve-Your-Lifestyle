@@ -11,30 +11,68 @@ import Firebase
 
 var listOfTaskLists = [TaskList]()
 var listOfHistory = [OneDaysHistory]()
+var userId = ""
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var userId = "playerId"
     var ref: DatabaseReference!
-    var newTaskList = true
-    var selectedRow = 0
     var placeOfHistoryCell = 0
     var currentList = "New list"
     var dateToSave = ""
     var startDate = ""
+    var lastCellClicked = false
     
     @IBOutlet weak var homeTableView: UITableView!
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    
+    
+    // MARK: - Starter functions
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.black
+        
+        if let id = UserDefaults.standard.object(forKey: "userId") as? String {
+            userId = id
+        } else {
+            saveUserId()
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(saveListValues(_:)), name: Notification.Name(rawValue: "saveListValues"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveIsPrivateValue(_:)), name: Notification.Name(rawValue: "saveIsPrivateValue"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveIsActiveValue(_:)), name: Notification.Name(rawValue: "saveIsActiveValue"), object: nil)
+        
         let tbc = tabBarController as! TabBarController
         placeOfHistoryCell = tbc.placeOfHistoryCell
-        userId = tbc.userId
         dateToSave = tbc.dateToSave
         startDate = tbc.startDate
         
         homeTableView.tableFooterView = UIView(frame: CGRect.zero)
         getDataFromFirebase()
+        homeTableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let tbc = tabBarController as! TabBarController
+        placeOfHistoryCell = tbc.placeOfHistoryCell
+        homeTableView.reloadData()
+    }
+    
+    func saveUserId() {
+        ref = Database.database().reference()
+        userId = ref.childByAutoId().key
+        let defaults = UserDefaults.standard
+        defaults.set(userId, forKey: "userId")
+        defaults.synchronize()
+    }
+    
+    // MARK: - Firebase
+    func getDataFromFirebase() {
+        getListsFromFirebase()
+        getHistoryFromFirebase()
+        getInfoFromFirebase()
     }
     
     func getListsFromFirebase() {
@@ -45,8 +83,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             for child in snapshot.children {
                 let list = child as! DataSnapshot
                 let dictionary = list.value as! [String: AnyObject]
-                let listName = dictionary["listName"] as! String
-                newList.append(TaskList(name: listName))
+                if let l = dictionary["listName"] {
+                    if let i = dictionary["isPrivate"] {
+                        if let a = dictionary["isActive"] {
+                            let listName = l as! String
+                            let isPrivate = i as! String
+                            let isActive = a as! String
+                            newList.append(TaskList(name: listName, isPrivate: Bool(isPrivate)!, isActive: Bool(isActive)!))
+                        }
+                    }
+                }
                 
                 for child in list.childSnapshot(forPath: "tasks").children {
                     let task = child as! DataSnapshot
@@ -66,17 +112,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             listOfTaskLists = newList
             for list in listOfTaskLists {
-                for task in list.taskList{
-                    print("\(task.name) \(task.completed)")
-                }
                 list.taskList.sort()
-                print("")
-                print("sorted")
-                for task in list.taskList{
-                    print("\(task.name) \(task.completed)")
-                }
             }
-            
             self.homeTableView.reloadData()
         }
     }
@@ -124,8 +161,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 tbc.startDate = dateAsString
                 self.dateToSave = dateAsString
                 tbc.dateToSave = dateAsString
-                self.ref.child(self.userId).child("info").child("startDate").setValue(dateAsString)
-                self.ref.child(self.userId).child("info").child("dateToSave").setValue(dateAsString)
+                self.ref.child(userId).child("info").child("startDate").setValue(dateAsString)
+                self.ref.child(userId).child("info").child("dateToSave").setValue(dateAsString)
             }
             
             if let n = dictionary?["dateToSave"]{
@@ -135,63 +172,185 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func getDataFromFirebase() {
-        getListsFromFirebase()
-        getHistoryFromFirebase()
-        getInfoFromFirebase()
+    // MARK: - Notifications
+    @objc func saveIsActiveValue(_ notification: Notification) {
+        let row = notification.userInfo!["tag"] as! Int
+        let isActive = notification.userInfo!["isActive"] as! Bool
+        for i in 0...listOfTaskLists.count - 1 {
+            if !(row == i) {
+                listOfTaskLists[i].isActive = false
+                ref.child(userId).child("lists").child(String(i)).child("isActive").setValue("false")
+            }
+        }
+        listOfTaskLists[row].isActive = isActive
+        ref.child(userId).child("lists").child(String(row)).child("isActive").setValue(String(isActive))
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        let tbc = tabBarController as! TabBarController
-        placeOfHistoryCell = tbc.placeOfHistoryCell
+    @objc func saveIsPrivateValue(_ notification: Notification) {
+        let row = notification.userInfo!["tag"] as! Int
+        let isPrivate = notification.userInfo!["isPrivate"] as! Bool
+        ref.child(userId).child("lists").child(String(row)).child("isPrivate").setValue(String(isPrivate))
+        listOfTaskLists[row].isPrivate = isPrivate
+    }
+    
+    @objc func saveListValues(_ notification: Notification) {
+        let title = notification.userInfo!["title"] as! String
+        let isPrivate = notification.userInfo!["isPrivate"] as! Bool
+        
+        if homeTableView.isEditing {
+            let row = notification.userInfo!["tag"] as! Int
+            ref.child(userId).child("lists").child(String(row)).child("listName").setValue(title)
+            listOfTaskLists[row].name = title
+        } else {
+            ref = Database.database().reference()
+            ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("listName").setValue(title)
+            ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("isPrivate").setValue(String(isPrivate))
+            ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("isActive").setValue(String("false"))
+            
+            listOfTaskLists.append(TaskList(name: title, isPrivate: isPrivate, isActive: false))
+        }
         homeTableView.reloadData()
-        newTaskList = true
+    }
+    
+    // MARK: - TableView
+    @IBAction func editBtnPressed(_ sender: UIBarButtonItem) {
+        var title = "Edit"
+        homeTableView.isEditing = !homeTableView.isEditing
+        if homeTableView.isEditing {
+            title = "Done"
+        }
+        editButton.title = title
+        homeTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfTaskLists.count + 1
+        if tableView.isEditing {
+            return listOfTaskLists.count
+        } else {
+            return listOfTaskLists.count + 1
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.row == listOfTaskLists.count {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "homeCell", for: indexPath)
-        let lastCell = tableView.dequeueReusableCell(withIdentifier: "lastHomeCell", for: indexPath)
+        let cell = Bundle.main.loadNibNamed("HomeTableViewCell", owner: self, options: nil)?.first as! HomeTableViewCell
+        let lastCell = Bundle.main.loadNibNamed("AddListTableViewCell", owner: self, options: nil)?.first as! AddListTableViewCell
         
-        if indexPath.row < listOfTaskLists.count {
-            cell.textLabel?.text = listOfTaskLists[indexPath.row].name
-            return cell
+        if tableView.isEditing {
+            var segmentInt = 1
+            if listOfTaskLists[indexPath.row].isPrivate {
+                segmentInt = 0
+            }
+            lastCell.segmentedControl.isHidden = false
+            lastCell.segmentedControl.tag = indexPath.row
+            lastCell.segmentedControl.selectedSegmentIndex = segmentInt
+            
+            
+            lastCell.textView.isHidden = false
+            lastCell.textView.tag = indexPath.row
+            lastCell.textView.text = listOfTaskLists[indexPath.row].name
+            
+            return lastCell
         }
         else {
-            lastCell.textLabel?.text = ""
-            lastCell.textLabel?.textColor = UIColor.gray
-            return lastCell
+            if indexPath.row == listOfTaskLists.count {
+                if lastCellClicked {
+                    lastCell.segmentedControl.isHidden = false
+                    lastCell.segmentedControl.tag = -1
+                    lastCell.textView.isHidden = false
+                    lastCell.textView.becomeFirstResponder()
+                    
+                    lastCellClicked = false
+                } else {
+                   lastCell.textLabel?.text = "Click to add list"
+                }
+                return lastCell
+            } else {
+                cell.titleLabel.text = listOfTaskLists[indexPath.row].name
+                if listOfTaskLists[indexPath.row].isPrivate {
+                    cell.privateLabel.text = "Private"
+                } else {
+                    cell.privateLabel.text = "Public"
+                }
+                cell.cellSwitch.tag = indexPath.row
+                cell.cellSwitch.isOn = listOfTaskLists[indexPath.row].isActive
+                return cell
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == (listOfTaskLists.count) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "lastHomeCell", for: indexPath) as! LastHomeTableViewCell
-            
-            cell.textField.isHidden = false
-            print("false")
+        if indexPath.row == listOfTaskLists.count {
+            lastCellClicked = true
             homeTableView.reloadData()
-            
-        }
-        else {
-            newTaskList = false
-            selectedRow = indexPath.row
-            
-            performSegue(withIdentifier: "toAddTask", sender: AnyObject.self)
+        } else {
+            performSegue(withIdentifier: "toAddTask", sender: indexPath.row)
         }
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            listOfTaskLists.remove(at: indexPath.row)
+            ref.child(userId).child("lists").child(String(listOfTaskLists.count)).removeValue()
+            
+            for i in indexPath.row...listOfTaskLists.count {
+                var a = i
+                if a == 0 {
+                    a = 1
+                }
+                var count = 0
+                
+                if listOfTaskLists[a - 1].taskList.count == 0 {
+                    let isActive = String(listOfTaskLists[a - 1].isActive)
+                    let isPrivate = String(listOfTaskLists[a - 1].isPrivate)
+                    let listName = listOfTaskLists[a - 1].name
+                    
+                    let path = ref.child(userId).child("lists").child(String(a - 1))
+                    path.child("isActive").setValue(isActive)
+                    path.child("isPrivate").setValue(isPrivate)
+                    path.child("listName").setValue(listName)
+                }
+                
+                for task in listOfTaskLists[a - 1].taskList {
+                    let name = task.name
+                    let completed = String(task.completed)
+                    let points = String(task.points)
+                    let isActive = String(listOfTaskLists[a - 1].isActive)
+                    let isPrivate = String(listOfTaskLists[a - 1].isPrivate)
+                    let listName = listOfTaskLists[a - 1].name
+                    
+                    let shortPath = ref.child(userId).child("lists").child(String(a - 1))
+                    shortPath.child("isActive").setValue(isActive)
+                    shortPath.child("isPrivate").setValue(isPrivate)
+                    shortPath.child("listName").setValue(listName)
+                    
+                    let path = shortPath.child("tasks").child(String(count))
+                    path.child("completed").setValue(completed)
+                    path.child("name").setValue(name)
+                    path.child("points").setValue(points)
+                    count += 1
+                }
+            }
+            tableView.reloadData()
+        }
+    }
     
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let addTaskViewController = segue.destination as? AddTaskViewController
-        
-        addTaskViewController?.newTaskList = newTaskList
-        addTaskViewController?.selectedRow = selectedRow
+        addTaskViewController?.selectedRow = sender as! Int
         addTaskViewController?.placeOfHistoryCell = placeOfHistoryCell
-        addTaskViewController?.userId = userId
         addTaskViewController?.dateToSave = dateToSave
         addTaskViewController?.startDate = startDate
     }
@@ -201,16 +360,4 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
