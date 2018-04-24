@@ -28,7 +28,7 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="Hem" id="Z5M-cT-sRP">
+                                    <navigationItem title="Home" id="Z5M-cT-sRP">
                                         <barButtonItem key="rightBarButtonItem" title="Edit" id="Oit-hS-bCS">
                                             <connections>
                                                 <action selector="editBtnPressed:" destination="oXW-K3-D8X" id="owe-eS-lYn"/>
@@ -37,19 +37,9 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1vL-aB-Ze5">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1vL-aB-Ze5">
                                 <rect key="frame" x="0.0" y="88" width="375" height="641"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="homeCell" id="yTw-IX-CJU">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yTw-IX-CJU" id="Nfy-fZ-cXh">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.028078071959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="oXW-K3-D8X" id="cAi-Ib-X6j"/>
                                     <outlet property="delegate" destination="oXW-K3-D8X" id="nBU-lQ-FxM"/>
@@ -72,6 +62,7 @@
                     <connections>
                         <outlet property="editButton" destination="Oit-hS-bCS" id="kTZ-hu-IXy"/>
                         <outlet property="homeTableView" destination="1vL-aB-Ze5" id="Wbm-In-SVl"/>
+                        <outlet property="navigationBar" destination="8Lw-hA-6U7" id="gKF-xT-T9b"/>
                         <segue destination="ed0-I4-c6b" kind="show" identifier="toAddTask" id="kU5-WM-nIg"/>
                     </connections>
                 </viewController>
@@ -148,27 +139,14 @@
                                     <outlet property="delegate" destination="5zG-Wm-IuA" id="CAd-2G-jb6"/>
                                 </connections>
                             </tableView>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wS7-GO-d9k">
-                                <rect key="frame" x="0.0" y="44" width="375" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="VOt-2e-TtZ"/>
-                                </constraints>
-                                <color key="barTintColor" white="0.14963107640000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Today" id="4vZ-xx-lyY"/>
-                                </items>
-                            </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gi5-qd-fBR">
                                 <rect key="frame" x="0.0" y="88" width="375" height="52"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8j8-Oe-YDR">
                                         <rect key="frame" x="8" y="8" width="359" height="22"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sbl-ob-kby">
-                                                <rect key="frame" x="0.0" y="0.0" width="248" height="22"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sbl-ob-kby">
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="22"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100/100" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3nH-uI-l23">
                                                         <rect key="frame" x="124" y="4" width="110" height="14"/>
@@ -185,10 +163,13 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.0" green="0.97647058823529409" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.49292439222335815" green="0.89273649454116821" blue="0.47250944375991821" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="200" id="uaI-NZ-6Tm"/>
+                                                </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.0" green="0.3402952602312419" blue="0.70550444162436543" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.24211528897285461" green="0.24211004376411438" blue="0.2421136200428009" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="Sbl-ob-kby" secondAttribute="bottom" id="2bR-ep-Ge8"/>
                                             <constraint firstItem="Sbl-ob-kby" firstAttribute="leading" secondItem="8j8-Oe-YDR" secondAttribute="leading" id="Tjw-3H-BI4"/>
@@ -205,6 +186,19 @@
                                     <constraint firstAttribute="height" constant="52" id="xbW-Wn-uJh"/>
                                 </constraints>
                             </view>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wS7-GO-d9k">
+                                <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="VOt-2e-TtZ"/>
+                                </constraints>
+                                <color key="barTintColor" white="0.14963107640000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="Today" id="4vZ-xx-lyY"/>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -223,6 +217,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Today" image="ic_insert_chart" id="L2B-Vj-f5s"/>
                     <connections>
+                        <outlet property="navigationBar" destination="wS7-GO-d9k" id="qlw-Aw-TFl"/>
                         <outlet property="pointsLabel" destination="VQX-ar-5fa" id="eFh-fw-4KH"/>
                         <outlet property="pointsLabel2" destination="3nH-uI-l23" id="Ybd-p7-RbK"/>
                         <outlet property="progressDoneView" destination="Sbl-ob-kby" id="IPy-F3-iWJ"/>
@@ -254,7 +249,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Download" id="B8q-xz-9Ko">
-                                        <barButtonItem key="leftBarButtonItem" title="Item" id="A5a-nu-iLM">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="A5a-nu-iLM">
                                             <connections>
                                                 <action selector="backBtnPressed:" destination="XoE-Aw-SCo" id="vlc-Tl-IAq"/>
                                             </connections>
@@ -262,9 +257,9 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gxW-5P-DEf">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gxW-5P-DEf">
                                 <rect key="frame" x="0.0" y="88" width="375" height="724"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="XoE-Aw-SCo" id="Xcp-rA-R23"/>
                                     <outlet property="delegate" destination="XoE-Aw-SCo" id="ldI-SL-gVz"/>
@@ -283,6 +278,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mS2-cA-tVo"/>
                     </view>
+                    <connections>
+                        <outlet property="downloadTaskTableView" destination="gxW-5P-DEf" id="EXb-I3-WuJ"/>
+                        <outlet property="navigationTitle" destination="B8q-xz-9Ko" id="dec-I0-rPN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zxS-Kr-L7h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -311,7 +310,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Title" id="rq1-Fq-u1z">
-                                        <barButtonItem key="leftBarButtonItem" title="&lt; Back" id="jMo-Z0-nQG">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="jMo-Z0-nQG">
                                             <connections>
                                                 <segue destination="eUB-U7-Kav" kind="show" id="xUc-MW-9Lb"/>
                                             </connections>
@@ -417,6 +416,7 @@
                         <color key="barTintColor" white="0.1496310763888889" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
+                        <outlet property="tabBarBar" destination="n1Z-AN-HTb" id="OJ0-Vl-gRr"/>
                         <segue destination="oXW-K3-D8X" kind="relationship" relationship="viewControllers" id="wfK-Cx-LGc"/>
                         <segue destination="5zG-Wm-IuA" kind="relationship" relationship="viewControllers" id="FFu-Xx-3Lw"/>
                         <segue destination="HgY-YP-mFO" kind="relationship" relationship="viewControllers" id="gkA-cZ-LkG"/>

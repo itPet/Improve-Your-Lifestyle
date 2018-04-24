@@ -16,38 +16,44 @@ var userId = ""
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var ref: DatabaseReference!
-    var placeOfHistoryCell = 0
     var currentList = "New list"
     var dateToSave = ""
-    var startDate = ""
     var lastCellClicked = false
+    var editMode = false
     
     @IBOutlet weak var homeTableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
-    
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     // MARK: - Starter functions
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
     
+    func setColors() {
+        view.backgroundColor = UIColor.black
+        homeTableView.backgroundColor = tableViewBackgroundColor
+        navigationBar.backgroundColor = headerAndFooterColor
+        editButton.tintColor = tabBarButtonColor
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.black
+        setColors()
+        
         
         if let id = UserDefaults.standard.object(forKey: "userId") as? String {
             userId = id
         } else {
             saveUserId()
         }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(saveListValues(_:)), name: Notification.Name(rawValue: "saveListValues"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(saveIsPrivateValue(_:)), name: Notification.Name(rawValue: "saveIsPrivateValue"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(saveIsActiveValue(_:)), name: Notification.Name(rawValue: "saveIsActiveValue"), object: nil)
         
         let tbc = tabBarController as! TabBarController
-        placeOfHistoryCell = tbc.placeOfHistoryCell
         dateToSave = tbc.dateToSave
-        startDate = tbc.startDate
         
         homeTableView.tableFooterView = UIView(frame: CGRect.zero)
         getDataFromFirebase()
@@ -55,8 +61,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let tbc = tabBarController as! TabBarController
-        placeOfHistoryCell = tbc.placeOfHistoryCell
         homeTableView.reloadData()
     }
     
@@ -142,33 +146,41 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         ref.child(userId).child("info").observeSingleEvent(of: .value) { (snapshot) in
             let dictionary = snapshot.value as? [String: AnyObject]
-            if let p = dictionary?["placeOfHistoryCell"] {
-                let placeOfHistoryCell = p as! String
-                self.placeOfHistoryCell = Int(placeOfHistoryCell)!
-                tbc.placeOfHistoryCell = self.placeOfHistoryCell
-            }
             
-            if let l = dictionary?["startDate"]{
-                self.dateToSave = l as! String
-                tbc.dateToSave = l as! String
+            if let dateToSave = dictionary?["dateToSave"]{
+                self.dateToSave = dateToSave as! String
+                tbc.dateToSave = dateToSave as! String
             } else {
                 let dateFormatter = DateFormatter()
                 let currentDate = Date()
                 dateFormatter.dateFormat = "yyyyMMdd"
-                let dateAsString = dateFormatter.string(from: currentDate)
+                let currentDateAsString = dateFormatter.string(from: currentDate)
                 
-                self.startDate = dateAsString
-                tbc.startDate = dateAsString
-                self.dateToSave = dateAsString
-                tbc.dateToSave = dateAsString
-                self.ref.child(userId).child("info").child("startDate").setValue(dateAsString)
-                self.ref.child(userId).child("info").child("dateToSave").setValue(dateAsString)
+                self.dateToSave = currentDateAsString
+                tbc.dateToSave = currentDateAsString
+                self.ref.child(userId).child("info").child("dateToSave").setValue(currentDateAsString)
+                self.createEmptyHistory(currentDate)
             }
-            
-            if let n = dictionary?["dateToSave"]{
-                self.dateToSave = n as! String
-                tbc.dateToSave = n as! String
-            }
+        }
+    }
+    
+    func createEmptyHistory(_ currentDate: Date) {
+        let dateFormatterYear = DateFormatter()
+        dateFormatterYear.dateFormat = "yyyyMMdd"
+        let dateFormatterDay = DateFormatter()
+        dateFormatterDay.dateFormat = "EEE"
+        var myComponent = DateComponents()
+        for i in 1...7 {
+            myComponent.day = i-8
+            let newDate = Calendar.current.date(byAdding: myComponent, to: currentDate)
+            let newDateAsString = dateFormatterYear.string(from: newDate!)
+            let newDayAsString = dateFormatterDay.string(from: newDate!)
+            ref.child(userId).child("history").child(String(listOfHistory.count)).child("points").setValue("0")
+            ref.child(userId).child("history").child(String(listOfHistory.count)).child("percent").setValue("0.0")
+            ref.child(userId).child("history").child(String(listOfHistory.count)).child("date").setValue(newDateAsString)
+            ref.child(userId).child("history").child(String(listOfHistory.count)).child("day").setValue(newDayAsString)
+            listOfHistory.append(OneDaysHistory(points: Int(0), percent: 0.0, date: newDateAsString, day: newDayAsString))
+            print("appended history")
         }
     }
     
@@ -184,6 +196,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         listOfTaskLists[row].isActive = isActive
         ref.child(userId).child("lists").child(String(row)).child("isActive").setValue(String(isActive))
+        homeTableView.reloadData()
     }
     
     @objc func saveIsPrivateValue(_ notification: Notification) {
@@ -196,8 +209,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @objc func saveListValues(_ notification: Notification) {
         let title = notification.userInfo!["title"] as! String
         let isPrivate = notification.userInfo!["isPrivate"] as! Bool
-        
-        if homeTableView.isEditing {
+        if editMode {
             let row = notification.userInfo!["tag"] as! Int
             ref.child(userId).child("lists").child(String(row)).child("listName").setValue(title)
             listOfTaskLists[row].name = title
@@ -208,6 +220,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             ref.child(userId).child("lists").child(String(listOfTaskLists.count)).child("isActive").setValue(String("false"))
             
             listOfTaskLists.append(TaskList(name: title, isPrivate: isPrivate, isActive: false))
+            editButton.isEnabled = true
         }
         homeTableView.reloadData()
     }
@@ -220,6 +233,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             title = "Done"
         }
         editButton.title = title
+        editMode = homeTableView.isEditing
         homeTableView.reloadData()
     }
     
@@ -293,6 +307,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == listOfTaskLists.count {
             lastCellClicked = true
+            editButton.isEnabled = false
             homeTableView.reloadData()
         } else {
             performSegue(withIdentifier: "toAddTask", sender: indexPath.row)
@@ -310,36 +325,37 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     a = 1
                 }
                 var count = 0
-                
-                if listOfTaskLists[a - 1].taskList.count == 0 {
-                    let isActive = String(listOfTaskLists[a - 1].isActive)
-                    let isPrivate = String(listOfTaskLists[a - 1].isPrivate)
-                    let listName = listOfTaskLists[a - 1].name
+                if listOfTaskLists.count != 0 {
+                    if listOfTaskLists[a - 1].taskList.count == 0 {
+                        let isActive = String(listOfTaskLists[a - 1].isActive)
+                        let isPrivate = String(listOfTaskLists[a - 1].isPrivate)
+                        let listName = listOfTaskLists[a - 1].name
+                        
+                        let path = ref.child(userId).child("lists").child(String(a - 1))
+                        path.child("isActive").setValue(isActive)
+                        path.child("isPrivate").setValue(isPrivate)
+                        path.child("listName").setValue(listName)
+                    }
                     
-                    let path = ref.child(userId).child("lists").child(String(a - 1))
-                    path.child("isActive").setValue(isActive)
-                    path.child("isPrivate").setValue(isPrivate)
-                    path.child("listName").setValue(listName)
-                }
-                
-                for task in listOfTaskLists[a - 1].taskList {
-                    let name = task.name
-                    let completed = String(task.completed)
-                    let points = String(task.points)
-                    let isActive = String(listOfTaskLists[a - 1].isActive)
-                    let isPrivate = String(listOfTaskLists[a - 1].isPrivate)
-                    let listName = listOfTaskLists[a - 1].name
-                    
-                    let shortPath = ref.child(userId).child("lists").child(String(a - 1))
-                    shortPath.child("isActive").setValue(isActive)
-                    shortPath.child("isPrivate").setValue(isPrivate)
-                    shortPath.child("listName").setValue(listName)
-                    
-                    let path = shortPath.child("tasks").child(String(count))
-                    path.child("completed").setValue(completed)
-                    path.child("name").setValue(name)
-                    path.child("points").setValue(points)
-                    count += 1
+                    for task in listOfTaskLists[a - 1].taskList {
+                        let name = task.name
+                        let completed = String(task.completed)
+                        let points = String(task.points)
+                        let isActive = String(listOfTaskLists[a - 1].isActive)
+                        let isPrivate = String(listOfTaskLists[a - 1].isPrivate)
+                        let listName = listOfTaskLists[a - 1].name
+                        
+                        let shortPath = ref.child(userId).child("lists").child(String(a - 1))
+                        shortPath.child("isActive").setValue(isActive)
+                        shortPath.child("isPrivate").setValue(isPrivate)
+                        shortPath.child("listName").setValue(listName)
+                        
+                        let path = shortPath.child("tasks").child(String(count))
+                        path.child("completed").setValue(completed)
+                        path.child("name").setValue(name)
+                        path.child("points").setValue(points)
+                        count += 1
+                    }
                 }
             }
             tableView.reloadData()
@@ -350,11 +366,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let addTaskViewController = segue.destination as? AddTaskViewController
         addTaskViewController?.selectedRow = sender as! Int
-        addTaskViewController?.placeOfHistoryCell = placeOfHistoryCell
         addTaskViewController?.dateToSave = dateToSave
-        addTaskViewController?.startDate = startDate
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "saveListValues"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "saveIsPrivateValue"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "saveIsActiveValue"), object: nil)
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -20,15 +20,12 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var addedTasksTableView: UITableView!
     @IBOutlet weak var theNavigationBar: UINavigationItem!
     
-    var placeOfHistoryCell = 0
     var selectedRow = 0
     var selectedPickerValue = 5
     var shouldDeleteOrChange = false
     
     var rowToEdit = 0
-    var currentList = "New list"
     var dateToSave = ""
-    var startDate = ""
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
@@ -44,6 +41,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         popUpView.layer.masksToBounds = true
         pointsPickerView.transform = CGAffineTransform(rotationAngle: (-90 * (.pi/180)))
         pointsPickerView.frame = CGRect(x: 0, y: 64, width: 263, height: 72)
+        theNavigationBar.title = listOfTaskLists[selectedRow].name
     }
     
     // MARK: - PickerView
@@ -172,8 +170,6 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         cell.nameLabel.text = listOfTaskLists[selectedRow].taskList[indexPath.row].name
         cell.pointsLabel.text = String(listOfTaskLists[selectedRow].taskList[indexPath.row].points)
-        cell.cellView.layer.cornerRadius = 15
-        cell.selectionStyle = .none
 
         return cell
     }
@@ -186,10 +182,6 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
         pointsPickerView.selectRow(listOfTaskLists[selectedRow].taskList[indexPath.row].points - 1, inComponent: 0, animated: false)
         selectedPickerValue = listOfTaskLists[selectedRow].taskList[indexPath.row].points
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.addedTasksTableView.endEditing(true)
-//    }
     
     func addInputToLocalTaskList () {
         listOfTaskLists[selectedRow].addTask(Task(name: nameTextField.text!, points: selectedPickerValue))
@@ -206,10 +198,7 @@ class AddTaskViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let tbc = segue.destination as? TabBarController
-        
-        tbc?.placeOfHistoryCell = placeOfHistoryCell
         tbc?.dateToSave = dateToSave
-        tbc?.startDate = startDate
     }
     
     // MARK: - Functions I don't use

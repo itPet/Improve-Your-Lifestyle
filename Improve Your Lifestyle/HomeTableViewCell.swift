@@ -20,6 +20,10 @@ class HomeTableViewCell: UITableViewCell{
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.contentView.backgroundColor = cellColor
+        self.backgroundColor = cellColor
+        titleLabel.textColor = normalTextColor
+        privateLabel.textColor = normalTextColor
     }
     
     @IBAction func switchMoved(_ sender: UISwitch) {

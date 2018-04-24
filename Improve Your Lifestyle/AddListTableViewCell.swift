@@ -16,8 +16,14 @@ class AddListTableViewCell: UITableViewCell, UITextFieldDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         textView.delegate = self
+        
+        self.contentView.backgroundColor = cellColor
+        self.backgroundColor = cellColor
+        self.textLabel?.textColor = UIColor.lightGray
+        textView.backgroundColor = cellColor
+        textView.textColor = normalTextColor
+        self.selectionStyle = .none
     }
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         var isPrivate = false

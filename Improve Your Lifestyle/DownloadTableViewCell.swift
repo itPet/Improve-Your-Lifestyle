@@ -18,7 +18,13 @@ class DownloadTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        downloadLabel.textColor = normalTextColor
+        self.contentView.backgroundColor = cellColor
+        //self.backgroundColor = cellColor
+        self.textLabel?.textColor = normalTextColor
+
+        //self.selectionStyle = .none
     }
     @IBAction func downloadIconPressed(_ sender: UITapGestureRecognizer) {
         listOfTaskLists.append(publicLists[downloadIcon.tag])

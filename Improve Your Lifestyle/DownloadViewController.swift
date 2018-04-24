@@ -22,8 +22,14 @@ class DownloadViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         getDataFromFirebase()
-
+        setColors()
+        downloadsTableView.tableFooterView = UIView(frame: CGRect.zero)
         NotificationCenter.default.addObserver(self, selector: #selector(updateTableView(notification:)), name: Notification.Name(rawValue: "updateTableView"), object: nil)
+    }
+    
+    func setColors() {
+        view.backgroundColor = UIColor.black
+        downloadsTableView.backgroundColor = tableViewBackgroundColor
     }
     
     @objc func updateTableView(notification: Notification) {
@@ -49,8 +55,7 @@ class DownloadViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedRow = indexPath.row
-        performSegue(withIdentifier: "toDownloadTasks", sender: (Any).self)
+        performSegue(withIdentifier: "toDownloadTasks", sender: indexPath.row)
     }
     
     // MARK: - Fireabse
@@ -94,7 +99,6 @@ class DownloadViewController: UIViewController, UITableViewDataSource, UITableVi
                     }
                 }
             }
-            print("newList: \(newList.count)")
             publicLists = newList
             self.downloadsTableView.reloadData()
         }
@@ -104,8 +108,8 @@ class DownloadViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let downloadTaskVC = segue.destination as! DownloadTasksViewController
-        downloadTaskVC.publicLists = publicLists
-        downloadTaskVC.selectedRow = selectedRow
+        downloadTaskVC.selectedRow = sender as! Int
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "updateTableView"), object: nil)
     }
     
     

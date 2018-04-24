@@ -10,13 +10,13 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    var placeOfHistoryCell = 0
     var dateToSave = ""
-    var startDate = ""
+    
+    @IBOutlet weak var tabBarBar: UITabBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tabBarBar.backgroundColor = headerAndFooterColor
     }
     
     override func didReceiveMemoryWarning() {

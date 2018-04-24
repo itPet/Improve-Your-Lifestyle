@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,49 +14,49 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="KGk-i7-Jjw" customClass="CustomTableViewCell" customModule="Improve_Your_Lifestyle" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="286" height="60"/>
+            <rect key="frame" x="0.0" y="0.0" width="343" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="286" height="59.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="343" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cze-7s-qPb">
-                        <rect key="frame" x="10" y="15" width="266" height="39.5"/>
+                        <rect key="frame" x="16" y="11" width="311" height="37.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nri-Vt-pEG">
-                                <rect key="frame" x="13" y="9.5" width="207" height="20.5"/>
+                                <rect key="frame" x="18" y="0.0" width="243" height="37.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdb-Rc-Dfs">
-                                <rect key="frame" x="228" y="9" width="30" height="23"/>
+                                <rect key="frame" x="261" y="0.0" width="30" height="37.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="5nY-U0-Aps"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="v3Z-Xn-GVW"/>
-                                    <constraint firstAttribute="height" constant="23" id="wWq-p9-cSQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.34268241300901969" blue="0.70555869509658764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.24211528897285461" green="0.24211004376411438" blue="0.2421136200428009" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="Xdb-Rc-Dfs" firstAttribute="leading" secondItem="nri-Vt-pEG" secondAttribute="trailing" constant="8" id="1ms-rt-B2w"/>
-                            <constraint firstAttribute="trailing" secondItem="Xdb-Rc-Dfs" secondAttribute="trailing" constant="8" id="DBn-sR-OE2"/>
-                            <constraint firstItem="Xdb-Rc-Dfs" firstAttribute="centerY" secondItem="Cze-7s-qPb" secondAttribute="centerY" id="DKk-Pa-cxj"/>
-                            <constraint firstItem="nri-Vt-pEG" firstAttribute="leading" secondItem="Cze-7s-qPb" secondAttribute="leading" constant="13" id="KML-Gd-Leh"/>
-                            <constraint firstItem="nri-Vt-pEG" firstAttribute="centerY" secondItem="Cze-7s-qPb" secondAttribute="centerY" id="Orc-Ks-7Cs"/>
-                            <constraint firstAttribute="height" constant="39.5" id="f1L-Fn-j85"/>
+                            <constraint firstAttribute="bottom" secondItem="nri-Vt-pEG" secondAttribute="bottom" id="1pR-9z-c6a"/>
+                            <constraint firstItem="nri-Vt-pEG" firstAttribute="top" secondItem="Cze-7s-qPb" secondAttribute="top" id="2q1-J7-ij6"/>
+                            <constraint firstItem="nri-Vt-pEG" firstAttribute="leading" secondItem="Cze-7s-qPb" secondAttribute="leadingMargin" constant="10" id="JB4-1q-WDX"/>
+                            <constraint firstItem="Xdb-Rc-Dfs" firstAttribute="leading" secondItem="nri-Vt-pEG" secondAttribute="trailing" id="UKB-VU-Tb1"/>
+                            <constraint firstItem="Xdb-Rc-Dfs" firstAttribute="top" secondItem="Cze-7s-qPb" secondAttribute="top" id="j7a-Pe-6fo"/>
+                            <constraint firstAttribute="bottom" secondItem="Xdb-Rc-Dfs" secondAttribute="bottom" id="qq4-fr-387"/>
+                            <constraint firstAttribute="trailing" secondItem="Xdb-Rc-Dfs" secondAttribute="trailing" constant="20" id="wl9-wU-hLY"/>
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" red="0.088810838758945465" green="0.088808275759220123" blue="0.088810034096240997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="Cze-7s-qPb" secondAttribute="bottom" constant="5" id="1uc-N5-bXm"/>
-                    <constraint firstItem="Cze-7s-qPb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="C9Z-HV-bkT"/>
-                    <constraint firstAttribute="trailing" secondItem="Cze-7s-qPb" secondAttribute="trailing" constant="10" id="uW4-by-NCF"/>
+                    <constraint firstItem="Cze-7s-qPb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="01l-Lb-I0X"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Cze-7s-qPb" secondAttribute="bottom" id="9XA-6j-kCv"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Cze-7s-qPb" secondAttribute="trailing" id="gD6-NB-GW9"/>
+                    <constraint firstItem="Cze-7s-qPb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="s22-tF-w7o"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -64,7 +65,7 @@
                 <outlet property="nameLabel" destination="nri-Vt-pEG" id="MEU-Uq-6Yt"/>
                 <outlet property="pointsLabel" destination="Xdb-Rc-Dfs" id="PQc-h9-ko6"/>
             </connections>
-            <point key="canvasLocation" x="9" y="75"/>
+            <point key="canvasLocation" x="-19.5" y="75"/>
         </tableViewCell>
     </objects>
 </document>

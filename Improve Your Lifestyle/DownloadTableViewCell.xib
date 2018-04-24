@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="389" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_file_download" translatesAutoresizingMaskIntoConstraints="NO" id="CDT-3d-Adk">
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_file_download_3x" translatesAutoresizingMaskIntoConstraints="NO" id="CDT-3d-Adk">
                         <rect key="frame" x="343" y="9" width="26" height="26"/>
                         <gestureRecognizers/>
                         <constraints>
@@ -37,15 +37,16 @@
                             <constraint firstAttribute="height" constant="24" id="ybD-D4-fGN"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" red="0.49292439220000001" green="0.89273649450000003" blue="0.47250944379999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 <constraints>
-                    <constraint firstItem="mHR-Wa-v1y" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Fuj-ND-DhS"/>
-                    <constraint firstAttribute="trailing" secondItem="mHR-Wa-v1y" secondAttribute="trailing" constant="20" id="GQH-by-QdA"/>
-                    <constraint firstAttribute="trailing" secondItem="CDT-3d-Adk" secondAttribute="trailing" constant="20" id="RGX-5u-biI"/>
-                    <constraint firstItem="CDT-3d-Adk" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="SuT-VT-nQ3"/>
+                    <constraint firstAttribute="trailing" secondItem="mHR-Wa-v1y" secondAttribute="trailing" constant="20" id="679-9x-hfL"/>
+                    <constraint firstAttribute="trailing" secondItem="CDT-3d-Adk" secondAttribute="trailing" constant="20" id="9tu-o1-kpG"/>
+                    <constraint firstItem="mHR-Wa-v1y" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="B9a-gC-XQF"/>
+                    <constraint firstItem="CDT-3d-Adk" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ou8-qZ-PbB"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -63,6 +64,6 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="ic_file_download" width="24" height="24"/>
+        <image name="ic_file_download_3x" width="72" height="72"/>
     </resources>
 </document>

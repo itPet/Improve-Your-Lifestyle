@@ -10,13 +10,25 @@ import UIKit
 import Firebase
 import ChartProgressBar
 
+let progressColor = UIColor(red: 92/255, green: 221/255, blue: 103/255, alpha: 1)
+let notProgressColor = UIColor(red: 62/255, green: 62/255, blue: 62/255, alpha: 1)
+let viewControllerBackgroundColor = UIColor.black
+let tableViewBackgroundColor = UIColor.black
+let headerAndFooterColor = UIColor(red: 23/255, green: 23/255, blue: 23/255, alpha: 1)
+let cellColor = UIColor(red: 23/255, green: 23/255, blue: 23/255, alpha: 1)
+let taskBackgroundColor = UIColor(red: 62/255, green: 62/255, blue: 62/255, alpha: 1)
+let normalTextColor = UIColor.white
+let completedTextColor = UIColor(red: 146/255, green: 219/255, blue: 129/255, alpha: 1)
+let tabBarButtonColor = UIColor(red: 51/255, green: 120/255, blue: 246/255, alpha: 1)
+
 class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var ref: DatabaseReference!
     var placeOfHistoryCell = -1
     var dateToSave = ""
-    var startDate = ""
     var firstTimeLoading = true
+    var newDay = 0
+    var fakeCurrentDate = 20180424
     
     var activeList = -1
     var maxPoints : Float = 0
@@ -27,46 +39,105 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var progressDoneView: UIView!
     @IBOutlet weak var progressLeftView: UIView!
     @IBOutlet weak var todayIcon: UITabBarItem!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("didload")
         ref = Database.database().reference()
         let tbc = tabBarController as! TabBarController
-        view.backgroundColor = UIColor.black
-        placeOfHistoryCell = tbc.placeOfHistoryCell
         dateToSave = tbc.dateToSave
-        startDate = tbc.startDate
-        
-        toDayTableView.tableFooterView = UIView(frame: CGRect.zero)
-        
-        calculateMaxPoints()
-        updateProgressBar()
-        saveHistory()
-        updateProgressBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print("will appear")
+        setColors()
+        updateActiveList()
+        
+        if activeList == -1 || listOfTaskLists[activeList].taskList.count == 0 {
+            setProgressBarToZero()
+        } else {
+            updatePlaceOfHistoryCell()
+            toDayTableView.tableFooterView = UIView(frame: CGRect.zero)
+            saveHistory()
+            updateProgressBar()
+        }
         toDayTableView.reloadData()
-        updateProgressBar()
-        let myIndexPath = IndexPath(row: placeOfHistoryCell, section: 0)
-        toDayTableView.scrollToRow(at: myIndexPath, at: .top, animated: false)
+    }
+    
+    override func awakeFromNib() {
+        print("awake")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        if activeList != -1 {
+            if listOfTaskLists[activeList].taskList.count != 0 {
+                updateProgressBar()
+            }
+        } else {
+            setProgressBarToZero()
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
     
+    // MARK: - Updatefunctions
     func updateActiveList() {
-        for i in 0...listOfTaskLists.count - 1 {
-            if listOfTaskLists[i].isActive == true {
-                activeList = i
+        activeList = -1
+        if listOfTaskLists.count != 0 {
+            for i in 0...listOfTaskLists.count - 1 {
+                if listOfTaskLists[i].isActive == true {
+                    activeList = i
+                }
             }
         }
     }
     
+    func updatePlaceOfHistoryCell() {
+        var counter = 0
+        for task in listOfTaskLists[activeList].taskList {
+            if task.completed {
+                counter += 1
+                print("counter: \(counter)")
+            }
+        }
+        placeOfHistoryCell = counter
+        print("placeOf...: \(placeOfHistoryCell)")
+    }
+    
+    func setProgressBarToZero() {
+        pointsLabel.text = "0/0"
+        pointsLabel2.text = "0/0"
+        progressLeftView.layer.cornerRadius = progressLeftView.frame.size.height / 2
+        progressDoneView.layer.cornerRadius = progressDoneView.frame.size.height / 2
+        progressDoneView.frame.size.width = CGFloat(0)
+    }
+    
+    func updateProgressBar() {
+        currentPoints = 0
+        maxPoints = 0
+        if activeList != -1 {
+            if listOfTaskLists[activeList].taskList.count != 0 {
+                for task in listOfTaskLists[activeList].taskList {
+                    if task.completed {
+                        currentPoints += Float(task.points)
+                    }
+                    maxPoints += Float(task.points)
+                }
+            }
+        }
+        pointsLabel.text = "\(Int(currentPoints))/\(Int(maxPoints))"
+        pointsLabel2.text = "\(Int(currentPoints))/\(Int(maxPoints))"
+        progressLeftView.layer.cornerRadius = progressLeftView.frame.size.height / 2
+        progressDoneView.layer.cornerRadius = progressDoneView.frame.size.height / 2
+        progressDoneView.frame.size.width = CGFloat((Float(progressLeftView.frame.size.width) / maxPoints) * currentPoints)
+    }
+    
     // MARK: - TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if listOfTaskLists.count == 0 {
+        if listOfTaskLists.count == 0 || activeList == -1 || listOfTaskLists[activeList].taskList.count == 0 {
             return 0
         }
         else {
@@ -75,17 +146,19 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let lastRow = listOfTaskLists[activeList].taskList.count + 1
+        
         if indexPath.row == placeOfHistoryCell {
-            return 210
-        } else if indexPath.row == 0 {
-            return 80
-        } else if indexPath.row == listOfTaskLists[activeList].taskList.count + 1 {
+            return 260
+        }
+        else if indexPath.row == lastRow {
             if tableView.frame.size.height - CGFloat(210 + (60 * (listOfTaskLists[activeList].taskList.count - placeOfHistoryCell))) < 1 {
                 return 0
             } else {
                 return tableView.frame.size.height - CGFloat(210 + (60 * (listOfTaskLists[activeList].taskList.count - placeOfHistoryCell)))
             }
-        } else {
+        }
+        else {
             return 50
         }
     }
@@ -94,17 +167,32 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let cell = Bundle.main.loadNibNamed("CustomTableViewCell", owner: self, options: nil)?.first as! CustomTableViewCell
         let cellWithHistory = Bundle.main.loadNibNamed("TableViewHistoryCell", owner: self, options: nil)?.first as! TableViewHistoryCell
         let emptyCell = Bundle.main.loadNibNamed("EmptyTableViewCell", owner: self, options: nil)?.first as! EmptyTableViewCell
-    
-        var subtract = 0
-        if indexPath.row > placeOfHistoryCell {
-            subtract = 1
+        
+        let lastCell = listOfTaskLists[activeList].taskList.count + 1
+        
+        if indexPath.row < placeOfHistoryCell {
+            cell.nameLabel.text = listOfTaskLists[activeList].taskList[indexPath.row].name
+            cell.nameLabel.textColor = UIColor(red: 122/255, green: 221/255, blue: 117/255, alpha: 1)
+            
+            cell.pointsLabel.text = String(listOfTaskLists[activeList].taskList[indexPath.row].points)
+            cell.pointsLabel.textColor = UIColor(red: 122/255, green: 221/255, blue: 117/255, alpha: 1)
+            
+            cell.cellView.backgroundColor = UIColor(red: 33/255, green: 53/255, blue: 33/255, alpha: 1)
+            cell.selectionStyle = .none
+            return cell
         }
-        if indexPath.row == placeOfHistoryCell {
+        else if indexPath.row == placeOfHistoryCell {
             updateHistoryView(cellWithHistory: cellWithHistory)
             cellWithHistory.selectionStyle = .none
             return cellWithHistory
         }
-        else if indexPath.row == listOfTaskLists[activeList].taskList.count + 1 {
+        else if indexPath.row > placeOfHistoryCell && indexPath.row < lastCell {
+            cell.nameLabel.text = listOfTaskLists[activeList].taskList[indexPath.row - 1].name
+            cell.pointsLabel.text = String(listOfTaskLists[activeList].taskList[indexPath.row - 1].points)
+            cell.selectionStyle = .none
+            return cell
+        }
+        else { //lastCell
             if firstTimeLoading {
                 let myIndexPath = IndexPath(row: placeOfHistoryCell, section: 0)
                 tableView.scrollToRow(at: myIndexPath, at: .top, animated: false)
@@ -113,52 +201,41 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
             emptyCell.isUserInteractionEnabled = false
             return emptyCell
         }
-        else {
-            cell.nameLabel.text = listOfTaskLists[activeList].taskList[indexPath.row - subtract].name
-            cell.pointsLabel.text = String(listOfTaskLists[activeList].taskList[indexPath.row - subtract].points)
-            cell.cellView.layer.cornerRadius = 15
-            cell.selectionStyle = .none
-            return cell
-        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let tbc = tabBarController as! TabBarController
-        
-        if indexPath.row > placeOfHistoryCell {
-            let elementToMove = listOfTaskLists[activeList].taskList[indexPath.row - 1]
-            ref.child(userId).child("lists").child("0").child("tasks").child(String(indexPath.row - 1)).child("completed").setValue("true")
-            elementToMove.completed = true
-            listOfTaskLists[activeList].taskList.remove(at: indexPath.row - 1)
-            listOfTaskLists[activeList].taskList.insert(elementToMove, at: placeOfHistoryCell)
-            
-            placeOfHistoryCell += 1
-        }
-        
-        if indexPath.row < placeOfHistoryCell {
-            let elementToMove = listOfTaskLists[activeList].taskList[indexPath.row]
-            elementToMove.completed = false
+        if indexPath.row < placeOfHistoryCell { //Make task uncompleted
+            for _ in 1...10 {
+                print("")
+            }
+            print("uncomplete nr: \(indexPath.row)")
+            listOfTaskLists[activeList].taskList[indexPath.row].completed = false
             ref.child(userId).child("lists").child("0").child("tasks").child(String(indexPath.row)).child("completed").setValue("false")
-            listOfTaskLists[activeList].taskList.remove(at: indexPath.row)
-            placeOfHistoryCell -= 1
-            listOfTaskLists[activeList].taskList.insert(elementToMove, at: placeOfHistoryCell)
         }
-        
-        tbc.placeOfHistoryCell = placeOfHistoryCell
-        ref.child(userId).child("info").child("placeOfHistoryCell").setValue(String(placeOfHistoryCell))
+        else if indexPath.row > placeOfHistoryCell { //Make task completed
+            listOfTaskLists[activeList].taskList[indexPath.row - 1].completed = true
+            ref.child(userId).child("lists").child("0").child("tasks").child(String(indexPath.row - 1)).child("completed").setValue("true")
+            for _ in 1...10 {
+                print("")
+            }
+            print("complete nr: \(indexPath.row - 1)")
+        }
+        listOfTaskLists[activeList].taskList.sort()
+        sortFireBaseList()
+        updatePlaceOfHistoryCell()
         toDayTableView.reloadData()
         updateProgressBar()
-        if indexPath.row > placeOfHistoryCell - 1 && indexPath.row - placeOfHistoryCell < 7 {
+        
+        if indexPath.row > placeOfHistoryCell - 1 && indexPath.row - placeOfHistoryCell < 7 { // Scroll to historyCell
             let myIndexPath = IndexPath(row: placeOfHistoryCell, section: 0)
             tableView.scrollToRow(at: myIndexPath, at: .top, animated: false)
-            print("select")
         }
     }
     
     func updateHistoryView(cellWithHistory: TableViewHistoryCell) {
         var data: [BarData] = []
         var num = 0
-
+    
         if listOfHistory.count > 0 {
             if listOfHistory.count > 6 {
                 num = 7
@@ -172,96 +249,99 @@ class ToDayViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 data.append(BarData.init(barTitle: barTitle, barValue: barValue, pinText: String(pinText)))
             }
             cellWithHistory.chartProgressView.data = data
-            cellWithHistory.chartProgressView.barsCanBeClick = false
+            cellWithHistory.chartProgressView.barsCanBeClick = true
             cellWithHistory.chartProgressView.barHeight = 150
             cellWithHistory.chartProgressView.maxValue = 100
-            cellWithHistory.chartProgressView.barTitleColor = UIColor(red: 0, green: 87/255.0, blue: 180/255.0, alpha: 1)
-            cellWithHistory.chartProgressView.progressColor = UIColor(red: 0, green: 249/255.0, blue: 0, alpha: 1)
-            cellWithHistory.chartProgressView.emptyColor = UIColor(red: 0, green: 87/255.0, blue: 180/255.0, alpha: 1)
+            cellWithHistory.chartProgressView.barTitleColor = normalTextColor
+            cellWithHistory.chartProgressView.progressColor = progressColor
+            cellWithHistory.chartProgressView.emptyColor = notProgressColor
             cellWithHistory.chartProgressView.build()
         }
     }
     
-    // MARK: - Help functions
-    func calculateMaxPoints() {
-        for task in listOfTaskLists[activeList].taskList {
-            maxPoints += Float(task.points)
-        }
-    }
-    
-    func updateProgressBar() {
-        currentPoints = 0
-        if placeOfHistoryCell != 0 {
-            for i in 0...placeOfHistoryCell-1 {
-                currentPoints += Float(listOfTaskLists[activeList].taskList[i].points)
-            }
-        }
-        pointsLabel.text = "\(Int(currentPoints))/\(Int(maxPoints))"
-        pointsLabel2.text = "\(Int(currentPoints))/\(Int(maxPoints))"
-        progressLeftView.layer.cornerRadius = progressLeftView.frame.size.height / 2
-        progressDoneView.layer.cornerRadius = progressDoneView.frame.size.height / 2
-        progressDoneView.frame.size.width = CGFloat((Float(progressLeftView.frame.size.width) / maxPoints) * currentPoints)
-    }
     
     // MARK: - FireBase
     func saveHistory() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "EEE"
+        let dateFormatterYear = DateFormatter()
+        dateFormatterYear.dateFormat = "yyyyMMdd"
+        let dateFormatterDay = DateFormatter()
+        dateFormatterDay.dateFormat = "EEE"
         
-        let dateToSaveAsDate = dateFormatter.date(from: dateToSave)
-        let currentDateAsString = dateFormatter.string(from: Date())
-        let currentDate = dateFormatter.date(from: currentDateAsString)
+        let dateToSaveAsDate = dateFormatterYear.date(from: dateToSave)
+        let currentDateAsString = dateFormatterYear.string(from: Date())
+        let currentDate = dateFormatterYear.date(from: currentDateAsString)
+        let dayToSaveAsString = dateFormatterDay.string(from: dateToSaveAsDate!)
         
         let timeDifference = dateToSaveAsDate?.timeIntervalSince(currentDate!)
         let differenceInDays = Int(-(timeDifference! / 86400))
+        
         if differenceInDays > 0 {
+            // Save history from dateToSave
             ref.child(userId).child("history").child(String(listOfHistory.count)).child("points").setValue(String(Int(currentPoints)))
             ref.child(userId).child("history").child(String(listOfHistory.count)).child("percent").setValue(String((currentPoints / maxPoints)*100))
             ref.child(userId).child("history").child(String(listOfHistory.count)).child("date").setValue(dateToSave)
-            ref.child(userId).child("history").child(String(listOfHistory.count)).child("day").setValue(dayFormatter.string(from: dateToSaveAsDate!))
-            listOfHistory.append(OneDaysHistory(points: Int(currentPoints), percent: (currentPoints / maxPoints)*100, date: dateToSave, day: dayFormatter.string(from: dateToSaveAsDate!)))
-            placeOfHistoryCell = 0
-            dateToSave = currentDateAsString
-            ref.child(userId).child("info").child("placeOfHistoryCell").setValue("0")
-            ref.child(userId).child("info").child("dateToSave").setValue(String(currentDateAsString))
-            for i in 0...listOfTaskLists[activeList].taskList.count - 1 {
-                ref.child(userId).child("lists").child("0").child("tasks").child(String(i)).child("completed").setValue("false")
+            ref.child(userId).child("history").child(String(listOfHistory.count)).child("day").setValue(dayToSaveAsString)
+            listOfHistory.append(OneDaysHistory(points: Int(currentPoints), percent: (currentPoints / maxPoints)*100, date: dateToSave, day: dayToSaveAsString))
+            
+            //Set all tasks to uncompleted
+            for i in 0...listOfTaskLists.count - 1 {
+                if listOfTaskLists[i].taskList.count != 0 {
+                    for a in 0...listOfTaskLists[i].taskList.count - 1 {
+                        listOfTaskLists[i].taskList[a].completed = false
+                        ref.child(userId).child("lists").child(String(i)).child("tasks").child(String(a)).child("completed").setValue("false")
+                    }
+                }
             }
+            dateToSave = currentDateAsString
+            ref.child(userId).child("info").child("dateToSave").setValue(String(currentDateAsString))
         }
         if differenceInDays > 1 {
-            print(differenceInDays)
             var myComponent = DateComponents()
             for i in 1...differenceInDays - 1 {
                 myComponent.day = i-differenceInDays
                 let newDate = Calendar.current.date(byAdding: myComponent, to: currentDate!)
-                let newDateAsString = dateFormatter.string(from: newDate!)
+                let newDateAsString = dateFormatterYear.string(from: newDate!)
+                let newDayAsString = dateFormatterDay.string(from: newDate!)
                 ref.child(userId).child("history").child(String(listOfHistory.count)).child("points").setValue("0")
                 ref.child(userId).child("history").child(String(listOfHistory.count)).child("percent").setValue("0.0")
                 ref.child(userId).child("history").child(String(listOfHistory.count)).child("date").setValue(newDateAsString)
-                ref.child(userId).child("history").child(String(listOfHistory.count)).child("day").setValue(dayFormatter.string(from: newDate!))
-                listOfHistory.append(OneDaysHistory(points: Int(0), percent: 0.0, date: newDateAsString, day: dayFormatter.string(from: newDate!)))
+                ref.child(userId).child("history").child(String(listOfHistory.count)).child("day").setValue(newDayAsString)
+                listOfHistory.append(OneDaysHistory(points: Int(0), percent: 0.0, date: newDateAsString, day: newDayAsString))
             }
+        }
+        newDay = 0
+        updatePlaceOfHistoryCell()
+        updateProgressBar()
+        toDayTableView.reloadData()
+        let myIndexPath = IndexPath(row: placeOfHistoryCell, section: 0)
+        toDayTableView.scrollToRow(at: myIndexPath, at: .top, animated: false)
+    }
+    
+    func sortFireBaseList() {
+        ref.child(userId).child("lists").child(String(activeList)).child("tasks").removeValue()
+        for i in 0...listOfTaskLists[activeList].taskList.count - 1 {
+            let completed = String(listOfTaskLists[activeList].taskList[i].completed)
+            let name = listOfTaskLists[activeList].taskList[i].name
+            let points = String(listOfTaskLists[activeList].taskList[i].points)
+            ref.child(userId).child("lists").child(String(activeList)).child("tasks").child(String(i)).child("completed").setValue(completed)
+            ref.child(userId).child("lists").child(String(activeList)).child("tasks").child(String(i)).child("name").setValue(name)
+            ref.child(userId).child("lists").child(String(activeList)).child("tasks").child(String(i)).child("points").setValue(points)
         }
     }
     
-    // MARK: - Functions I don't use
     
+    // MARK: - Colors
+    func setColors() {
+        progressDoneView.backgroundColor = progressColor
+        progressLeftView.backgroundColor = notProgressColor
+        view.backgroundColor = viewControllerBackgroundColor
+        navigationBar.backgroundColor = headerAndFooterColor
+        toDayTableView.backgroundColor = tableViewBackgroundColor
+    }
+    
+    // MARK: - Functions I don't use
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

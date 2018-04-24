@@ -17,7 +17,15 @@ class CustomTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        cellView.layer.cornerRadius = 5
+        self.selectionStyle = .none
+        
+        self.contentView.backgroundColor = cellColor
+        self.backgroundColor = cellColor
+        nameLabel.textColor = normalTextColor
+        pointsLabel.textColor = normalTextColor
+        cellView.backgroundColor = taskBackgroundColor
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -10,22 +10,36 @@ import UIKit
 
 class DownloadTasksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet weak var downloadTaskTableView: UITableView!
+    @IBOutlet weak var navigationTitle: UINavigationItem!
+    
     var selectedRow = 0
-    var publicLists = [TaskList]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        downloadTaskTableView.tableFooterView = UIView(frame: CGRect.zero)
+        navigationTitle.title = publicLists[selectedRow].name
+        setColors()
+    }
+    
+    func setColors() {
+        view.backgroundColor = UIColor.black
+        downloadTaskTableView.backgroundColor = tableViewBackgroundColor
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return publicLists[selectedRow].taskList.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = publicLists[selectedRow].taskList[indexPath.row].name
+        let cell = Bundle.main.loadNibNamed("CustomTableViewCell", owner: self, options: nil)?.first as! CustomTableViewCell
+        
+        cell.nameLabel.text = publicLists[selectedRow].taskList[indexPath.row].name
+        cell.pointsLabel.text = String(publicLists[selectedRow].taskList[indexPath.row].points)
         return cell
     }
     

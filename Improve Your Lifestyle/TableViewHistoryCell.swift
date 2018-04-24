@@ -12,12 +12,17 @@ import ChartProgressBar
 class TableViewHistoryCell: UITableViewCell {
 
     @IBOutlet weak var chartProgressView: ChartProgressBar!
+    @IBOutlet weak var viewOutsideChartProgressView: UIView!
     
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        self.contentView.backgroundColor = tableViewBackgroundColor
+        viewOutsideChartProgressView.backgroundColor = cellColor
+        chartProgressView.backgroundColor = cellColor
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
